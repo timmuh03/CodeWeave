@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from db import check_db_connection
+from routers import router as notes_router
 
 app = FastAPI()
 
 @app.get("/")
 def read_root():
-  return {"message": "FastAPI is running"}
+  return {"message": "Edited in Replit!"}
 
 @app.get("/health")
 def health_check():
@@ -25,3 +26,5 @@ def db_health_check():
     "status": "error",
     "database": "not connected"
   }
+
+app.include_router(notes_router)
