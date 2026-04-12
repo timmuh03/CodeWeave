@@ -1,0 +1,141 @@
+<!Doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width, 
+      initial-scale=1.0">
+    <title>Notes</title>
+
+    <style>
+       * {
+         box-sizing: border-box;
+       }
+       body {
+         margin: 0;
+         padding: 16px;
+         font-family: Arial, sans-serif;
+         line-height: 1.5;
+         background-color: #f5f5f5;
+       }
+      .app {
+         max-width: 800px;
+         margin: 0 auto;
+      }
+      h1 {
+         margin-top: 0;
+         font-size: 2rem;
+      }
+      form {
+         display: flex;
+         flex-direction: column;
+         gap: 12px;
+         margin-bottom: 20px;
+      }
+      input, button {
+         width: 100%;
+         padding: 14px;
+         font-size: 1rem;
+         border-radius: 10px;
+         border: 1px solid #ccc;
+      }
+      button {
+         border: none;
+         curser: pointer;
+      }
+      ul {
+         list-style: none;
+         padding: 0;
+         margin: 0;
+      }
+      li {
+         background-color: #fff;
+         padding: 16px;
+         margin-bottom: 12px;
+         border-radius: 10px;
+         border: 1px solid #ccc;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+         word-break: break-word;
+      }
+      @media (min-width: 768px) {
+         body {
+            padding: 24px;
+         }
+         form {
+            flex-direction: row;
+            align-items: stretch;
+         }
+         input {
+           flex: 1;
+         }
+         button {
+            width: auto;
+            min-width: 120px;
+         }
+      }
+    </style>
+  </head>
+  <body>
+     <div class="app">
+        <h1>Notes</h1>
+
+        <form id="note-form">
+            <input id="note-input"
+              type="text" 
+              placeholder="Write a note"
+              required
+              />
+            <button type="submit">
+              Add Note
+            </button>
+        </form>
+
+        <ul id="notes-list">
+        </ul>
+        
+     </div>
+
+     <script>
+        const form = document.getElementById("note-form");
+        const input = document.getElementById("note-input");
+        const list = document.getElementById("notes-list")
+
+        async function fetchNotes() {
+           const response = await fetch("/notes");
+           const notes = await response.json();
+           list.innerHTML = "";
+
+           for (const note of notes) {
+              const li = document.createElement("li");
+              li.textContent = `${note.id}: ${note.text}`;
+              list.appendChild(li);
+           }
+        }
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault()
+
+          const text = input.value.trim();
+          if (!text) return;
+
+          const response = await fetch("/notes", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text }),
+          });
+
+          if (!response.ok) {
+             alert("Failed to add note");
+             return;
+           }
+           input.value = "";
+           await fetchNotes();
+        });
+
+        fetchNotes()
+     </script>
+  </body>
+  </html>
+  
+    

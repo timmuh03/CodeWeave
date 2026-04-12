@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse, FileResponse
+
 from db import check_db_connection, engine
 from routers import router as notes_router
 from models import Base
@@ -7,9 +9,10 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def read_root():
-  return {"message": "Edited in Replit!"}
+  return FileResponse("index.html")
+  # return RedirectResponse(url="/docs")
 
 @app.get("/health")
 def health_check():
