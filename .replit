@@ -7,7 +7,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["libxcrypt"]
+packages = ["libxcrypt", "sqlite"]
 
 [[ports]]
 localPort = 8000

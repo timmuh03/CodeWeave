@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, FileResponse
 
 from db import check_db_connection, engine
-from routers import router as notes_router
+from routers import router as concepts_router
 from models import Base
 
 app = FastAPI()
@@ -48,4 +48,4 @@ def db_health_check():
     "database": "not connected"
   }
 
-app.include_router(notes_router)
+app.include_router(concepts_router)

@@ -1,10 +1,11 @@
 from pydantic import BaseModel
 
-class NoteCreate(BaseModel):
-  text: str
+class ConceptCreate(BaseModel):
+  term: str
+  description: str
+  example: str | None = None
 
-class NoteRead(BaseModel):
+class ConceptRead(ConceptCreate):
   id: int
-  text: str
 
   model_config = {"from_attributes":True}

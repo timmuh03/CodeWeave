@@ -3,50 +3,59 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from db import get_db
-from models import Note
-from schemas import NoteCreate, NoteRead
+from models import Concept
+from schemas import ConceptCreate, ConceptRead
 
 
 router = APIRouter()
 
 
 @router.post(
-  "/notes", 
-  response_model=NoteRead
+  "/concepts", 
+  response_model=ConceptRead
 )
-def create_note(
-  note: NoteCreate, 
+def create_concept(
+  concept: ConceptCreate, 
   db: Session = Depends(get_db)
 ):
-  db_note = Note(text=note.text)
+  db_concept = Concept (
+    term=concept.term,
+    description=concept.description,
+    example=concept.example
+  )
+
   
-  db.add(db_note)
+  db.add(db_concept)
   db.commit()
-  db.refresh(db_note)
+  db.refresh(db_concept)
   
-  return db_note
+  return db_concept
 
 @router.get(
-  "/notes",
-  response_model=list[NoteRead]
+  "/concepts",
+  response_model=list[ConceptRead]
 )
-def get_notes(
+def get_concepts(
   db: Session = Depends(get_db)
 ):
-   notes = db.scalars(select(Note)).all()
-   return notes
+  concepts = (
+    db.scalars(select(Concept)).all()
+    )
+  return concepts
 
 @router.delete(
-  "/notes/{note_id}",
-  response_model=NoteRead
+  "/concepts/{concept_id}",
+  response_model=ConceptRead
 )
-def delete_note(
-  note_id: int,
+def delete_concept(
+  concept_id: int,
   db: Session = Depends(get_db)
 ):
-   note = db.scalars(select(Note).where(Note.id == note_id)).first()
+  concept = db.scalars(
+    select(Concept).where(
+      Concept.id == concept_id)).first()
 
-   if note:
-     db.delete(note)
+  if concept:
+     db.delete(concept)
      db.commit()
-     return note
+     return concept

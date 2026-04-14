@@ -31,58 +31,22 @@ input, button {
 }
 button {
    border: none;
-   curser: pointer;
+   cursor: pointer;
 }
 ul {
    list-style: none;
    padding: 0;
    margin: 0;
-}
-li {
-   background-color: #fff;
-   padding: 16px;
-   margin-bottom: 12px;
    border-radius: 10px;
    border: 1px solid #ccc;
-   box-shadow: 0 2px 4px 
-      rgba(0, 0, 0, 0.1);
-   word-break: break-word;
-}
-.note-shell {
-   position: relative;
-   list-style: none;
-   margin-bottom: 12px;
-   border-radius: 10px;
-   overflow: hidden;
-}
-.note-delete-area {
-   position: absolute;
-   top: 0;
-   right: 0;
-   bottom: 0;
-   width: 100px;
-}
-.note-card {
-   position: relative;
    background-color: #fff;
-   padding: 16px;
-   border-radius: 10px;
-   border: 1px solid #ccc;
-   box-shadow: 0 2px 4px
-      rgba(0, 0, 0, 0.1)
-   word-break: break-word;
-   transition: transform 0.3s ease;
-   touch-action: pan-y
 }
-.note-delete-btn {
-   position: absolute;
-   width: 80px;
-   height: 100%;
-   border: none;
-   border-radius: 10px;
-   cursor: pointer;
-   color: #fff;
-   background-color: #ff4444
+li:not(:last-child) {
+   border-bottom: 1px solid #ccc;
+}
+.term {
+   padding: 15px;
+   overflow-wrap: break-word;
 }
 @media (min-width: 768px) {
    body {
