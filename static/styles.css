@@ -81,14 +81,15 @@ li:not(:last-child) {
    width: 60px;
 }
 
-.details {
+.details-shell {
    display: none;
    padding: 15px;
    white-space: pre-wrap;
    border-top: 1px solid #ccc;
+   height: auto;
 }
 
-.details.open-details {
+.details-shell.open-details {
    display: block;
 }
 
@@ -101,6 +102,58 @@ li:not(:last-child) {
 
 .sort-option {
    text-align: right;
+}
+
+.examples-shell {
+   display: flex;
+   flex-direction: column;
+   align-items: stretch;
+}
+
+.example-btn {
+   display: block;
+   width: 100%;
+   text-align: left;
+   white-space: normal;
+   cursor: pointer;
+}
+
+.example-btn-title {
+   font-weight: bold;
+}
+
+.example-btn-preview {
+   margin: 6px 0 0 0;
+   white-space: pre-wrap;
+   overflow-wrap: break-word;
+}
+
+.examples-list {
+   display: flex;
+   flex-direction: column;
+   right: 0;
+   text-align: left;
+   overflow-wrap: break-word;
+   word-break: break-word;
+}
+
+.examples-list:not(.open-examples)
+.example-item:not(.selected-example) {
+   display: none;
+}
+
+.examples-list:not(.open-examples)
+.example-item.selected-example
+.example-btn {
+   border: none;
+   background: transparent;
+   padding-left: 0;
+   padding-right: 0;
+   cursor: default;
+}
+
+.examples-list.open-examples {
+   display: flex;
 }
 
 #sort-ctl-shell,

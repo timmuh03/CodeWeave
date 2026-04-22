@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class ExampleTemplateCreate(BaseModel):
   title: str
-  template_text: str | None = None
+  template_text: str
   display_order: int = 0
 
 class ExampleTemplateRead(

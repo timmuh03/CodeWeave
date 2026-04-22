@@ -53,7 +53,7 @@ def create_concept(
 
 @router.get(
   "/",
-  response_model=list[ConceptReadDown],
+  response_model=list[ConceptRead],
   status_code=status.HTTP_200_OK
 )
 def get_concepts(
@@ -65,7 +65,31 @@ def get_concepts(
 
   if not concepts:
     logger.info("No concepts found")
+    
   return concepts
+
+@router.get(
+  "/{concept_id}",
+  response_model=ConceptReadDown,
+  status_code=status.HTTP_200_OK
+)
+def get_concept(
+  concept_id: int,
+  db: Session = Depends(get_db)
+):
+  concept = db.scalar(
+    select(Concept).where(
+      Concept.id == concept_id)
+  )
+  
+  if not concept:
+    raise HTTPException(
+      status_code=status.
+      HTTP_404_NOT_FOUND,
+      detail="Concept not found"
+    )
+
+  return concept
 
 @router.delete(
   "/{concept_id}",

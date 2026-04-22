@@ -22,5 +22,3 @@ class SlotOptionReadUp(SlotOptionCreate):
 class SlotOptionUpdate(BaseModel):
   option_text: str | None = None
   display_order: int | None = None
-
-  model_config = {"from_attributes": True}

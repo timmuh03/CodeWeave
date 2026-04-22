@@ -6,13 +6,16 @@ class ConceptCreate(BaseModel):
   term: str
   description: str
 
-class ConceptReadDown(ConceptCreate):
+class ConceptReadDown(BaseModel):
+  term: str
+  description: str
   id: int
   examples: list["ExampleTemplateReadDown"]
 
   model_config = {"from_attributes": True}
 
-class ConceptRead(ConceptCreate):
+class ConceptRead(BaseModel):
+  term: str
   id: int
 
   model_config = {"from_attributes": True}
