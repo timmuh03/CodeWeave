@@ -1,3 +1,6 @@
+import { loadSlots } 
+  from "/static/js/slots.js"
+
 export function loadExamples(concept) {
   const examplesShell =
     document.createElement("div");
@@ -91,26 +94,16 @@ function createExampleItem(
         examplesBtn
       );
     }
-  )
-
-  const examplePreview =
-    document.createElement("pre");
-  examplePreview.className =
-    "example-btn-preview";
-  examplePreview.textContent =
-    example.template_text ||
-    "No example available";
-
-  examplePreview.addEventListener(
-    "click",
-    () => {
-      handleExampleClick(
-        exampleItem,
-        examplesList,
-        examplesBtn
-      );
-    }
   );
+  
+  const examplePreview =
+    loadSlots(
+      example.template_text,
+      example.slots
+    );
+  examplePreview.classList.add(
+    "example-preview"
+  )
 
   exampleShell.appendChild(exampleTitle);
   exampleShell.appendChild(examplePreview);

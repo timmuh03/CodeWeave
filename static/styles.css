@@ -137,6 +137,40 @@ li:not(:last-child) {
    word-break: break-word;
 }
 
+.slot-shell {
+   display: inline-block;
+   position: relative;
+   vertical-align: middle;
+}
+
+.slot-btn {
+   display: inline-block;
+}
+
+.slot-options-menu {
+   display: none;
+   position: absolute;
+   top: 50%;
+   left: 0;
+   z-index: 10;
+   transform: translateY(-50%);
+   width: max-content;
+   min-width: max-content;
+   background-color: #f5f5f5;
+}
+
+.slot-options-menu.open-slot-menu {
+   display: flex;
+   flex-direction: column;
+}
+
+.slot-option-btn {
+   display: block;
+   width: 100%;
+   text-align: left;
+   white-space: no-wrap;
+}
+
 .examples-list:not(.open-examples)
 .example-item:not(.selected-example) {
    display: none;
@@ -154,6 +188,12 @@ li:not(:last-child) {
 
 .examples-list.open-examples {
    display: flex;
+}
+
+.example-preview {
+   white-space: pre-wrap;
+   overflow-wrap: break-word;
+   word-break: break-word
 }
 
 #sort-ctl-shell,
