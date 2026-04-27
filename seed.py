@@ -1,7 +1,7 @@
 from db import SessionLocal, engine
 from models.base import Base
 from models.concept import Concept
-from models.example_template import ExampleTemplate
+from models.example import Example
 from models.example_slot import ExampleSlot
 from models.slot_option import SlotOption
 
@@ -17,7 +17,7 @@ seed_data = [
     "examples": [
       {
         "title": "Basic Event Listener",
-        "template_text": (
+        "text": (
           'document.querySelector("##Target##")'
           '.addEventListener("##Event Type##", '
           '() => {\n'
@@ -100,7 +100,7 @@ seed_data = [
       },
       {
         "title": "Named Handler",
-        "template_text": (
+        "text": (
           'const handler = () => {\n'
           '  console.log("##Message##");\n'
           '};\n\n'
@@ -154,7 +154,7 @@ seed_data = [
     "examples": [
       {
         "title": "Select One Element",
-        "template_text": (
+        "text": (
           'const el = document.querySelector('
           '"##Selector##");'
         ),
@@ -186,7 +186,7 @@ seed_data = [
       },
       {
         "title": "Update Text Content",
-        "template_text": (
+        "text": (
           'document.querySelector("##Selector##")'
           '.textContent = "##Text##";'
         ),
@@ -241,7 +241,7 @@ seed_data = [
     "examples": [
       {
         "title": "Basic Fetch",
-        "template_text": (
+        "text": (
           'fetch("##URL##")\n'
           '  .then((response) => response.json())\n'
           '  .then((data) => {\n'
@@ -272,7 +272,7 @@ seed_data = [
       },
       {
         "title": "Fetch With Method",
-        "template_text": (
+        "text": (
           'fetch("##URL##", {\n'
           '  method: "##Method##",\n'
           '})\n'
@@ -332,7 +332,7 @@ seed_data = [
     "examples": [
       {
         "title": "Basic Array Map",
-        "template_text": (
+        "text": (
           'const result = ##Array##.map(('
           '##Item##) => ##Transform##);'
         ),
@@ -404,7 +404,7 @@ seed_data = [
     "examples": [
       {
         "title": "Delayed Action",
-        "template_text": (
+        "text": (
           'setTimeout(() => {\n'
           '  console.log("##Message##");\n'
           '}, ##Delay##);'
@@ -472,10 +472,10 @@ def seed_db() -> None:
       for example_data in concept_data.get(
         "examples", []
       ):
-        example = ExampleTemplate(
+        example = Example(
           title=example_data["title"],
-          template_text=example_data.get(
-            "template_text"
+          text=example_data.get(
+            "text"
           ),
           display_order=example_data.get(
             "display_order", 0

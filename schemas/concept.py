@@ -10,7 +10,7 @@ class ConceptReadDown(BaseModel):
   term: str
   description: str
   id: int
-  examples: list["ExampleTemplateReadDown"]
+  examples: list["ExampleReadDown"]
 
   model_config = {"from_attributes": True}
 

@@ -7,8 +7,8 @@ from models.base import Base
 
 
 
-class ExampleTemplate(Base):
-  __tablename__ = "example_templates"
+class Example(Base):
+  __tablename__ = "examples"
 
   id: Mapped[int] = (
     mapped_column(primary_key=True)
@@ -19,7 +19,7 @@ class ExampleTemplate(Base):
   title: Mapped[str] = (
     mapped_column(String(100))
   )
-  template_text: Mapped[str | None] = (
+  text: Mapped[str | None] = (
     mapped_column(Text, nullable=True)
   )
   display_order: Mapped[int] = (
@@ -32,7 +32,7 @@ class ExampleTemplate(Base):
   )
   slots: Mapped[list[
     "ExampleSlot"]] = (relationship(
-       back_populates="template",
+       back_populates="example",
        cascade="all, delete-orphan")
   )
 

@@ -12,9 +12,9 @@ class ExampleSlot(Base):
   id: Mapped[int] = (
     mapped_column(primary_key=True)
   )
-  template_id: Mapped[int] = (
+  example_id: Mapped[int] = (
     mapped_column(ForeignKey(
-                  "example_templates.id"))
+                  "examples.id"))
   )
   slot_label: Mapped[str] = (
     mapped_column(String(50))
@@ -23,7 +23,7 @@ class ExampleSlot(Base):
     mapped_column(String(50))
   )
 
-  template: Mapped["ExampleTemplate"] = (
+  example: Mapped["Example"] = (
     relationship(back_populates="slots")
   )
   slot_options: Mapped[list[

@@ -16,8 +16,7 @@ class Concept(Base):
     mapped_column(unique=True))
   description: Mapped[str] = (
     mapped_column())
-  examples: Mapped[list[
-  "ExampleTemplate"]] = (
+  examples: Mapped[list["Example"]] = (
     relationship(back_populates="concept",
       cascade="all, delete-orphan")
   )

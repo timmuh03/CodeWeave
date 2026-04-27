@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from db import get_db
 from models.example_slot import (
   ExampleSlot)
-from models.example_template import (
-  ExampleTemplate)
+from models.example import (
+  Example)
 from schemas import (
   ExampleSlotCreate,
   ExampleSlotReadUp, 
@@ -31,8 +31,8 @@ def create_example_slot(
   db: Session = Depends(get_db),
 ):
   example = db.scalar(select(
-    ExampleTemplate).where(
-      ExampleTemplate.id == example_id)
+    Example).where(
+      Example.id == example_id)
   )
 
   if not example:
@@ -43,7 +43,7 @@ def create_example_slot(
   slot = ExampleSlot(
     slot_label=slot_data.slot_label,
     slot_type=slot_data.slot_type,
-    template_id=example_id,
+    example_id=example_id,
   )
 
   db.add(slot)
@@ -109,8 +109,8 @@ def get_example_slots(
   db: Session = Depends(get_db),
 ):
   example = db.scalar(select(
-    ExampleTemplate).where(
-    ExampleTemplate.id == example_id)
+    Example).where(
+    Example.id == example_id)
   )
 
   if not example:
@@ -122,7 +122,7 @@ def get_example_slots(
 
   slots = db.scalars(select(
     ExampleSlot).where(
-    ExampleSlot.template_id == example_id)
+    ExampleSlot.example_id == example_id)
   ).all()
 
   if not slots:

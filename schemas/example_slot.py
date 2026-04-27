@@ -8,15 +8,15 @@ class ExampleSlotCreate(BaseModel):
 class ExampleSlotReadDown(
   ExampleSlotCreate):
   id: int
-  template_id: int
+  example_id: int
   slot_options: list["SlotOptionRead"]
 
   model_config = {"from_attributes": True}
 
 class ExampleSlotReadUp(ExampleSlotCreate):
   id: int
-  template_id: int
-  template: "ExampleTemplateReadUp"
+  example_id: int
+  example: "ExampleReadUp"
 
   model_config = {"from_attributes": True}
 

@@ -98,7 +98,7 @@ function createExampleItem(
   
   const examplePreview =
     loadSlots(
-      example.template_text,
+      example.text,
       example.slots
     );
   examplePreview.classList.add(

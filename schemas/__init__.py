@@ -3,11 +3,11 @@ from schemas.concept import (
   ConceptRead, 
   ConceptReadDown, 
   ConceptUpdate)
-from schemas.example_template import (
-  ExampleTemplateCreate, 
-  ExampleTemplateReadDown, 
-  ExampleTemplateReadUp, 
-  ExampleTemplateUpdate)
+from schemas.example import (
+  ExampleCreate, 
+  ExampleReadDown, 
+  ExampleReadUp, 
+  ExampleUpdate)
 from schemas.example_slot import (
   ExampleSlotCreate, 
   ExampleSlotReadDown, 
@@ -20,10 +20,10 @@ from schemas.slot_option import (
   SlotOptionUpdate)
 
 ConceptReadDown.model_rebuild()
-ExampleTemplateReadDown.model_rebuild()
+ExampleReadDown.model_rebuild()
 ExampleSlotReadDown.model_rebuild()
 SlotOptionRead.model_rebuild()
 ConceptRead.model_rebuild()
-ExampleTemplateReadUp.model_rebuild()
+ExampleReadUp.model_rebuild()
 ExampleSlotReadUp.model_rebuild()
 SlotOptionReadUp.model_rebuild()

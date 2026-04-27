@@ -2,7 +2,8 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse, FileResponse
+from fastapi.responses import (
+RedirectResponse, FileResponse)
 
 from db import check_db_connection, engine
 from models.base import Base
@@ -12,7 +13,7 @@ app = FastAPI()
 app.include_router(routers.health_router)
 app.include_router(routers.concept_router)
 app.include_router(
-  routers.example_template_router)
+  routers.example_router)
 app.include_router(
   routers.example_slot_router)
 app.include_router(

@@ -1,19 +1,23 @@
 export function loadSlots(
-  templateText,
+   exampleText,
   slots
 ) {
   const shell =
     document.createElement("pre");
   shell.className = "example-btn-preview";
 
-  if (!templateText || !slots) {
+  if (!exampleText) {
     shell.textContent =
-      templateText || "No template text";
+      exampleText || "No example text";
+    return shell;
+  } else if (!slots) {
+    shell.textContent =
+      "No slots available";
     return shell;
   }
 
   const parts =
-    templateText.split(/(##.*?##)/);
+    exampleText.split(/(##.*?##)/);
 
   for (const part of parts) {
     const isSlot =

@@ -17,7 +17,8 @@ export async function fetchConceptDetails(
   );
 
   if (!response.ok) {
-    alert("Failed to fetch concept details");
+    alert(
+      "Failed to fetch concept details");
     return null;
   }
 

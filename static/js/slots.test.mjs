@@ -1,6 +1,6 @@
 
 
-const templateText = 
+const  exampleText = 
   'document.querySelector("##Selector##").'+
   'textContent = "##Text##"'
 const slots = [
@@ -16,7 +16,7 @@ const slots = [
 
 
 const parts =
-  templateText.split(/(##.*?##)/);
+   exampleText.split(/(##.*?##)/);
 
 
 

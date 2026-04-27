@@ -7,15 +7,15 @@ from sqlalchemy.orm import Session
 
 from db import get_db
 from models.concept import Concept
-from models.example_template import (
-  ExampleTemplate)
+from models.example import (
+  Example)
 from schemas import (
   ConceptCreate,
   ConceptRead,
   ConceptReadDown,
   ConceptUpdate,
-  ExampleTemplateCreate,
-  ExampleTemplateReadDown)
+  ExampleCreate,
+  ExampleReadDown)
 
 router = APIRouter(
   prefix="/concepts",

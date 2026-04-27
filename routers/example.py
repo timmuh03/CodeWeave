@@ -7,27 +7,27 @@ from sqlalchemy.orm import Session
 
 from db import get_db
 from models.concept import Concept
-from models.example_template import (
-  ExampleTemplate)
+from models.example import (
+  Example)
 from schemas import (
-  ExampleTemplateCreate,
-  ExampleTemplateReadUp, 
-  ExampleTemplateReadDown,
-  ExampleTemplateUpdate)
+  ExampleCreate,
+  ExampleReadUp, 
+  ExampleReadDown,
+  ExampleUpdate)
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
-  tags=["Example Templates"])
+  tags=["Examples"])
 
 
 @router.post("/concepts/{concept_id}/"
   "examples",
-  response_model=ExampleTemplateReadUp,
+  response_model=ExampleReadUp,
   status_code=status.HTTP_201_CREATED)
-def create_example_template(
+def create_example(
   concept_id: int,
-  example_template: ExampleTemplateCreate,
+  example: ExampleCreate,
   db: Session = Depends(get_db),
 ):
   concept = db.scalar(
@@ -41,30 +41,29 @@ def create_example_template(
       detail="Concept not found",
     )
 
-  template = ExampleTemplate(
-    title=example_template.title,
-    template_text=(
-      example_template.template_text),
+  example = Example(
+    title=example.title,
+    text=(example.text),
     display_order=(
-      example_template.display_order),
+      example.display_order),
     concept_id=concept_id,
   )
 
-  db.add(template)
+  db.add(example)
   db.commit()
-  db.refresh(template)
+  db.refresh(example)
 
-  return template
+  return example
 
 @router.delete("/examples/{example_id}",
   status_code=status.HTTP_204_NO_CONTENT)
-def delete_example_template(
+def delete_example(
   example_id: int,
   db: Session = Depends(get_db),
 ):
   example = db.scalar(select(
-    ExampleTemplate).where(
-      ExampleTemplate.id == example_id))
+    Example).where(
+      Example.id == example_id))
 
   if not example:
     raise HTTPException(
@@ -76,16 +75,16 @@ def delete_example_template(
   db.commit()
 
 @router.patch("/examples/{example_id}",
-  response_model=ExampleTemplateReadUp,
+  response_model=ExampleReadUp,
   status_code=status.HTTP_200_OK)
-def update_example_template(
+def update_example(
   example_id: int,
-  example_update: ExampleTemplateUpdate,
+  example_update: ExampleUpdate,
   db: Session = Depends(get_db),
 ):
   example = db.scalar(select(
-    ExampleTemplate).where(
-      ExampleTemplate.id == example_id)
+    Example).where(
+      Example.id == example_id)
   )
 
   if not example:
@@ -97,10 +96,10 @@ def update_example_template(
   if example_update.title is not None:
     example.title = example_update.title
   if (
-    example_update.template_text 
+    example_update.text 
     is not None):
-    example.template_text = (
-      example_update.template_text)
+    example.text = (
+      example_update.text)
   if (example_update.display_order
     is not None):
     example.display_order = (
@@ -114,9 +113,9 @@ def update_example_template(
 @router.get(
   "/concepts/{concept_id}/examples",
   response_model=list[
-  ExampleTemplateReadDown],
+  ExampleReadDown],
   status_code=status.HTTP_200_OK)
-def get_example_templates(
+def get_examples(
   concept_id: int,
   db: Session = Depends(get_db),
 ):
@@ -133,8 +132,8 @@ def get_example_templates(
     )
 
   examples = db.scalars(select(
-    ExampleTemplate).where(
-    ExampleTemplate.concept_id ==
+    Example).where(
+    Example.concept_id ==
     concept_id)
   ).all()
 
