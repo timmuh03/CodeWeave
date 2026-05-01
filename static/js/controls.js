@@ -58,7 +58,9 @@ export function applyState(list) {
 
   concepts = concepts.filter((concept) =>
     concept.term.toLowerCase().includes(
-      appState.currentSearch
+      appState.currentSearch /* or 
+      concept.meta.includes(
+      appState.currentFilter) */
     )
   );
 

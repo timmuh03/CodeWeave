@@ -15,7 +15,14 @@ class Concept(Base):
   term: Mapped[str] = (
     mapped_column(unique=True))
   description: Mapped[str] = (
-    mapped_column())
+    mapped_column(String(255))
+  )
+  language: Mapped[str | None] = (
+    mapped_column(
+      String(50),
+      default="missing data"
+    )
+  )
   examples: Mapped[list["Example"]] = (
     relationship(back_populates="concept",
       cascade="all, delete-orphan")
