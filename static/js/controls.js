@@ -5,7 +5,7 @@ export function hideAllControls(refs) {
   refs.sortSelect.classList.remove(
     "open-panel"
   );
-  refs.searchInput.classList.remove(
+  refs.searchField.classList.remove(
     "open-panel"
   );
   refs.filterSelect.classList.remove(

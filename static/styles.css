@@ -227,7 +227,7 @@ li:not(:last-child) {
 }
 
 #sort-select,
-#search-input,
+#search-field,
 #filter-select {
    display: none;
    position: absolute;
@@ -242,16 +242,17 @@ li:not(:last-child) {
 }
 
 #sort-select.open-panel,
-#search-input.open-panel,
+#search-field.open-panel,
 #filter-select.open-panel {
-   display: block;
+   display: flex;
 }
 
 #sort-select {
+   flex-direction: column;
    width: 140px;
 }
 
-#search-input {
+#search-field {
    width: 200px;
 }
 

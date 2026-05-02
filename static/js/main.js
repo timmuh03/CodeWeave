@@ -22,6 +22,11 @@ const searchBtn =
   document.getElementById("search-btn");
 const searchInput =
   document.getElementById("search-input");
+const searchClearBtn = 
+  document.getElementById(
+    "search-clear-btn");
+const searchField =
+  document.getElementById("search-field");
 
 const filterBtn =
   document.getElementById("filter-btn");
@@ -48,7 +53,7 @@ const refs = {
   sortBtn,
   sortSelect,
   searchBtn,
-  searchInput,
+  searchField,
   filterBtn,
   filterSelect,
 };
@@ -63,7 +68,7 @@ function setListeners() {
     () => {
     toggleControl(
       searchBtn,
-      searchInput,
+      searchField,
       refs
     );
   });
@@ -101,6 +106,14 @@ function setListeners() {
           .toLowerCase()
           .trim();
 
+      applyState(list);
+    }
+  );
+
+  searchClearBtn.addEventListener(
+    "click", () => {
+      searchInput.value = "";
+      appState.currentSearch = "";
       applyState(list);
     }
   );
