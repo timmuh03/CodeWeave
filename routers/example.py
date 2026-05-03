@@ -27,7 +27,7 @@ router = APIRouter(
   status_code=status.HTTP_201_CREATED)
 def create_example(
   concept_id: int,
-  example: ExampleCreate,
+  example_data: ExampleCreate,
   db: Session = Depends(get_db),
 ):
   concept = db.scalar(
@@ -42,10 +42,9 @@ def create_example(
     )
 
   example = Example(
-    title=example.title,
-    text=(example.text),
-    display_order=(
-      example.display_order),
+    title=example_data.title,
+    text=example_data.text,
+    display_order=example_data.display_order,
     concept_id=concept_id,
   )
 
