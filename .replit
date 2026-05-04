@@ -11,3 +11,9 @@ packages = ["libxcrypt", "sqlite", "vim-full"]
 [[ports]]
 localPort = 8000
 externalPort = 80
+
+[userenv]
+
+[userenv.shared]
+CONCEPT_PAGE = "./templates/concept_form.html"
+START_PAGE = "./templates/index.html"

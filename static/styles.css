@@ -19,7 +19,8 @@ h1 {
    font-size: 2rem;
 }
 
-input {
+input,
+textarea{
    width: 100%;
    padding: 14px;
    font-size: 1rem;

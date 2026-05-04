@@ -137,6 +137,7 @@ function selectExample(
     "open-examples"
   );
   examplesBtn.textContent = "+";
+  examplesList.prepend(exampleItem);
 }
 
 // Toggle examples list

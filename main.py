@@ -1,4 +1,5 @@
 import logging
+import os
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -36,5 +37,7 @@ SHOW_DOCS = False
 def read_root():
   if SHOW_DOCS:
     return RedirectResponse(url="/docs")
-  return FileResponse(
-    "templates/index.html")  
+
+  site = os.environ['START_PAGE']
+  # site = os.environ["CONCEPT_PAGE"]
+  return FileResponse(site)

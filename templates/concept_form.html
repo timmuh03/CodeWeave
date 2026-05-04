@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0">
+    <script type="module"
+      src="/static/js/concept_form.js">
+    </script>
+    <link rel="stylesheet"
+      href="/static/styles.css">
+    <title>Code Weave</title>
+    
+  </head>
+  <body>
+    <div class="app">
+      <div class="concept-form">
+        <form id="concept-form">
+          <div class="form-group">
+            <label for="term">Term</label>
+            <input type="text" id="term"
+              name="term" 
+              placeholder="New Term"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="description"">
+              Description
+            </label>
+            <textarea id="description"
+              name="description" 
+              required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="tags">Tags</label>
+            <input type="text" id="tags"
+              name="tags">
+          </div>
+          <div class="form-group">
+            <label for="code">Code</label>
+            <textarea id="code"
+              name="code"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes"
+              name="notes"></textarea>
+          </div>
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+  </body>  
+</html>
