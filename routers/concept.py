@@ -4,6 +4,7 @@ from fastapi import (APIRouter, Depends,
   HTTPException, status)
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from fastapi.responses import FileResponse
 
 from db import get_db
 from models.concept import Concept
@@ -50,6 +51,11 @@ def create_concept(
   db.refresh(concept)
   
   return concept
+
+@router.get("/form", include_in_schema=False,
+  status_code=status.HTTP_200_OK)
+def get_concept_form():
+  return FileResponse("templates/concept_form.html")
 
 @router.get(
   "/",

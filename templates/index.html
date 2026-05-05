@@ -1,81 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport"
-      content="width=device-width, 
-      initial-scale=1.0">
-      <script type="module"
-        src="/static/js/main.js">
-      </script>
-      <link rel="stylesheet"
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, 
+    initial-scale=1.0">
+    <script type="module"
+      src="/static/js/main.js">
+    </script>
+    <link rel="stylesheet"
       href="/static/styles.css">
-      <title>Code Weave</title>
+    <title>Code Weave</title>
 
-   </head>
-   <body>
-     <div class="app">
-       <div class="header">
-         <h1>Concepts</h1>
-         <div class="header-controls">
-           <div id="sort-ctl-shell">
-             <button id="sort-btn" 
-               type="button" aria-label=
-               "Open sort options">⇅
-             </button>
-             <div id="sort-select">
-               <button id="sort-term-az"
-                 class="sort-option"
-                 type="button"
-                 data-term-sort=
-                 "term-az">
-                 ✓ Term A-Z
-               </button>
-               <button id="sort-term-za"
-                 class="sort-option"
-                 type="button"
-                 data-term-sort=
-                 "term-za">
-                  Term Z-A
-               </button>
-             </div>
-           </div>
-           <div id="search-ctl-shell">
-             <button id="search-btn" 
-               type="button" aria-label=
-               "Open search">⌕
-             </button>
-             <div id="search-field">
-               <input id="search-input"
-                 type="text"
-                 placeholder="Search"
-                 aria-label=
-                 "search concepts">
-               <button id="search-clear-btn"
-                 type="button" aria-label=
-                 "Clear search">x
-               </button>
-             </div>
-           </div>
-           <div id="filter-ctl-shell">
-             <button id="filter-btn"
-               type="button" aria-label=
-               "Open filter options">☰
-             </button>
-             <div id="filter-select">
-               <button data-filter="all">
-                  All
-               </button>
-             </div>
-           </div>
-         </div> 
-       </div>
+  </head>
+  <body>
+    <div class="app">
+      <div class="header">
+        <h1>Concepts</h1>
+        <div class="header-controls">
+          <div id="sort-ctl-shell">
+            <button id="sort-btn" 
+              type="button" aria-label=
+              "Open sort options">⇅
+            </button>
+            <div id="sort-select">
+              <button id="sort-term-az"
+                class="sort-option"
+                type="button"
+                data-term-sort=
+                "term-az">
+                ✓ Term A-Z
+              </button>
+              <button id="sort-term-za"
+                class="sort-option"
+                type="button"
+                data-term-sort=
+                "term-za">
+                Term Z-A
+              </button>
+            </div>
+          </div>
+          <div id="search-ctl-shell">
+            <button id="search-btn" 
+              type="button" aria-label=
+              "Open search">⌕
+            </button>
+            <div id="search-field">
+              <input id="search-input"
+                type="text"
+                placeholder="Search"
+                aria-label=
+                "search concepts">
+              <button id="search-clear-btn"
+                type="button" aria-label=
+                "Clear search">x
+              </button>
+            </div>
+          </div>
+          <div id="filter-ctl-shell">
+            <button id="filter-btn"
+              type="button" aria-label=
+              "Open filter options">☰
+            </button>
+            <div id="filter-select">
+              <button data-filter="all">
+                All
+              </button>
+            </div>
+          </div>
+        </div> 
+      </div>
          
-         <ul id="concepts-list">
-         </ul>
+        <ul id="concepts-list">
+        </ul>
         
       </div>
-
+      <div class="footer">
+        <a href="/concepts/form" 
+          id="add-concept-btn">
+          +
+        </a>
+      </div>
+    </div>
   </body>
 </html>
   
