@@ -1,5 +1,5 @@
 export async function fetchConcepts() {
-  const response = await fetch("/concepts");
+  const response = await fetch("/concepts/");
 
   if (!response.ok) {
     alert("Failed to fetch concepts");
@@ -12,9 +12,7 @@ export async function fetchConcepts() {
 export async function fetchConceptDetails(
   conceptId
 ) {
-  const response = await fetch(
-    "/concepts/" + conceptId
-  );
+  const response = await fetch("/concepts/" + conceptId);
 
   if (!response.ok) {
     alert(
@@ -23,4 +21,41 @@ export async function fetchConceptDetails(
   }
 
   return await response.json();
+}
+
+export async function createConcept(data) {
+  const response = await fetch('/concepts/', {
+    method: 'POST', 
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    console.error('Error saving concept:', error);
+    alert("Could not save concept");
+    throw Error("Could not save concept");
+  }
+
+  return await response.json();
+}
+
+export async function editConcept(concept) {
+   const response = await fetch(`/concepts/${concept.id}/form`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(concept)
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.error('Error editing concept:', error);
+    alert("Could not edit concept");
+  }
+
+  return await response.json()
 }

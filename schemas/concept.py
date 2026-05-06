@@ -5,6 +5,7 @@ from pydantic import BaseModel
 class ConceptCreate(BaseModel):
   term: str
   description: str
+  language: str | None = None
 
 class ConceptReadDown(BaseModel):
   term: str
@@ -17,6 +18,8 @@ class ConceptReadDown(BaseModel):
 class ConceptRead(BaseModel):
   term: str
   id: int
+  description: str
+  language: str | None = None
 
   model_config = {"from_attributes": True}
 

@@ -54,7 +54,12 @@ def create_concept(
 
 @router.get("/form", include_in_schema=False,
   status_code=status.HTTP_200_OK)
-def get_concept_form():
+def create_concept_form():
+  return FileResponse("templates/concept_form.html")
+
+@router.get("/{concept_id}/form", include_in_schema=False,
+  status_code=status.HTTP_200_OK)
+def edit_concept_form():
   return FileResponse("templates/concept_form.html")
 
 @router.get(

@@ -1,4 +1,5 @@
-import { fetchConceptDetails } from "./api.js";
+import { fetchConceptDetails, 
+       editConcept} from "./api.js";
 import { loadExamples } from "./examples.js";
 
 export function createConceptElement(concept) {
@@ -31,12 +32,39 @@ export function createConceptElement(concept) {
     );
   });
 
-  term.addEventListener("click", () => {
-    termBtnHandler(
+  const HOLD_TIME = 1000;
+
+  let holdTimer;
+  let longPress = false;
+
+  term.addEventListener("pointerdown", () => {
+    longPress = false;
+    
+    holdTimer = setTimeout(() => {
+      longPress = true;
+    }, HOLD_TIME);
+  });
+
+  term.addEventListener("pointerup", () => {
+    clearTimeout(holdTimer);
+    if (!longPress) {
+      termBtnHandler(
       termBtn,
       detailsShell,
       concept.id
-    );
+      );
+    } else {
+      window.location.href = `/concepts/${concept.id}/form`;
+    };
+    
+  });
+
+  term.addEventListener("pointerleave", () => {
+    clearTimeout(holdTimer);
+  });
+
+  term.addEventListener("pointercancel", () => {
+    clearTimeout(holdTimer);
   });
 
   termShell.appendChild(termBtn);
@@ -108,12 +136,12 @@ async function loadConceptDetails(
 }
 
 function loadDescription(concept) {
-  const descriptionE =
+  const descriptionEl =
     document.createElement("p");
-  descriptionE.className = "description";
-  descriptionE.textContent =
+  descriptionEl.className = "description";
+  descriptionEl.textContent =
     concept.description ||
     "No description available";
 
-  return descriptionE;
+  return descriptionEl;
 }
