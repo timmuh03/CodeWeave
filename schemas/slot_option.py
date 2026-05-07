@@ -1,24 +1,27 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 
-class SlotOptionCreate(BaseModel):
+class AppSchema(BaseModel):
+  model_config = ConfigDict(from_attributes=True)
+
+class SlotOptionCreate(AppSchema):
   option_text: str
   display_order: int = 0
 
-class SlotOptionRead(SlotOptionCreate):
+class SlotOptionRead(AppSchema):
   id: int
   slot_id: int
+  option_text: str
+  display_order: int = 0
 
-  model_config = {"from_attributes": True}
-
-class SlotOptionReadUp(SlotOptionCreate):
+class SlotOptionReadUp(AppSchema):
   id:  int
   slot_id: int
+  option_text: str
+  display_order: int = 0
   slot: "ExampleSlotReadUp"
 
-  model_config = {"from_attributes": True}
-
-class SlotOptionUpdate(BaseModel):
+class SlotOptionUpdate(AppSchema):
   option_text: str | None = None
   display_order: int | None = None

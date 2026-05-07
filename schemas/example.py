@@ -1,38 +1,40 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 
+class AppSchema(BaseModel):
+  model_config = ConfigDict(from_attributes=True)
 
-class ExampleCreate(BaseModel):
+class ExampleCreate(AppSchema):
   title: str
   text: str
   display_order: int = 0
 
-class ExampleRead(
-  ExampleCreate):
+class ExampleRead(AppSchema):
   id: int
   concept_id: int
-  
+  title: str
+  text: str
+  display_order: int = 0
 
-class ExampleReadDown(
-  ExampleCreate):
+class ExampleReadDown(AppSchema):
   id: int
   concept_id: int
+  title: str
+  text: str
+  display_order: int = 0
+  
   slots: list["ExampleSlotReadDown"]
 
-  model_config = {"from_attributes": True}
-
-class ExampleReadUp(
-  ExampleCreate):
+class ExampleReadUp(AppSchema):
   id: int
   concept_id: int
+  title: str
+  text: str
+  display_order: int = 0
   concept: "ConceptRead"
 
-  model_config = {"from_attributes": True}
-
-class ExampleUpdate(BaseModel):
+class ExampleUpdate(AppSchema):
   title: str | None = None
   text: str | None = None
   display_order: int | None = None
-
-  model_config  = {"from_attributes": True}

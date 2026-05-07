@@ -1,29 +1,28 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 
-class ConceptCreate(BaseModel):
+class AppSchema(BaseModel):
+  model_config = ConfigDict(from_attributes=True)
+
+class ConceptCreate(AppSchema):
   term: str
   description: str
   language: str | None = None
 
-class ConceptReadDown(BaseModel):
+class ConceptReadDown(AppSchema):
   term: str
   description: str
   id: int
   examples: list["ExampleReadDown"]
 
-  model_config = {"from_attributes": True}
-
-class ConceptRead(BaseModel):
+class ConceptRead(AppSchema):
   term: str
   id: int
   description: str
   language: str | None = None
 
-  model_config = {"from_attributes": True}
-
-class ConceptUpdate(BaseModel):
+class ConceptUpdate(AppSchema):
   term: str | None = None
   description: str | None = None
   language: str | None = None
