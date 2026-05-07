@@ -123,8 +123,7 @@ def delete_concept(
   db.delete(concept)
   db.commit()
 
-@router.patch(
-  "/{concept_id}",
+@router.patch("/{concept_id}",
   response_model=ConceptRead,
   status_code=status.HTTP_200_OK)
 def update_concept(
@@ -150,6 +149,9 @@ def update_concept(
     is not None):
     concept.description = (
       concept_update.description)
+
+  if concept_update.language is not None:
+    concept.language = concept_update.language
 
   db.commit()
   db.refresh(concept)

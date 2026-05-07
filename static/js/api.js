@@ -42,15 +42,15 @@ export async function createConcept(data) {
   return await response.json();
 }
 
-export async function editConcept(concept) {
-   const response = await fetch(`/concepts/${concept.id}/form`, {
+export async function editConcept(conceptId, data) {
+   const response = await fetch(`/concepts/${conceptId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(concept)
+    body: JSON.stringify(data)
   });
-
+  
   if (!response.ok) {
     const error = await response.json();
     console.error('Error editing concept:', error);

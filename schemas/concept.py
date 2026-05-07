@@ -26,3 +26,4 @@ class ConceptRead(BaseModel):
 class ConceptUpdate(BaseModel):
   term: str | None = None
   description: str | None = None
+  language: str | None = None
