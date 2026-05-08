@@ -127,6 +127,9 @@ async function loadConceptDetails(
 
   if (!concept) return;
 
+  const language = loadLanguage(concept);
+  detailsShell.appendChild(language);
+
   const description =
     loadDescription(concept);
   detailsShell.appendChild(description);
@@ -144,4 +147,14 @@ function loadDescription(concept) {
     "No description available";
 
   return descriptionEl;
+}
+
+function loadLanguage(concept) {
+  const languageEl =
+    document.createElement("p");
+  languageEl.className = "language";
+  languageEl.textContent = concept.language ||
+    "Language undefined";
+
+  return languageEl;
 }

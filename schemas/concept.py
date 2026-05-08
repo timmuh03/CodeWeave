@@ -12,6 +12,7 @@ class ConceptCreate(AppSchema):
 
 class ConceptReadDown(AppSchema):
   term: str
+  language: str | None = None
   description: str
   id: int
   examples: list["ExampleReadDown"]
