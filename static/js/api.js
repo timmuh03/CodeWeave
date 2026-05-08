@@ -57,5 +57,22 @@ export async function editConcept(conceptId, data) {
     alert("Could not edit concept");
   }
 
-  return await response.json()
+  return await response.json();
+}
+
+export async function deleteConcept(conceptId) {
+  const response = await fetch(`/concepts/${conceptId}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.error('Error deleting concept:', error);
+    alert("Could not delete concept");
+  }
+
+  window.location.href = '/';
+  alert("Concept deleted");
+
+  return true;
 }

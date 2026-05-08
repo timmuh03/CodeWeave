@@ -1,5 +1,6 @@
 import { 
-  fetchConceptDetails, createConcept, editConcept 
+  fetchConceptDetails, createConcept, editConcept,
+  deleteConcept
 } from "/static/js/api.js"
 
 const saveBtn = document.getElementById('form-save-btn');
@@ -8,6 +9,7 @@ const conceptForm = document.getElementById('concept-form');
 const termField = document.getElementById('term');
 const descriptionField = document.getElementById('description');
 const language = document.getElementById('language');
+const deleteBtn = document.getElementById('delete-btn');
 
 function getIdFromPath() {
   const path = window.location.pathname;
@@ -47,6 +49,15 @@ function setEventListeners() {
     const conceptId = getIdFromPath();
 
     await saveConcept(conceptId, data);
+  });
+
+  deleteBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    const conceptId = getIdFromPath();
+    if (!conceptId) return;
+
+    await deleteConcept(conceptId);
   });
 }
 

@@ -36,6 +36,7 @@ def create_concept(
   concept = Concept(
     term=concept_data.term,
     description=concept_data.description,
+    language=concept_data.language,
   )
 
   if not concept.term or (
