@@ -4,6 +4,10 @@ CodeWeave is an early-stage learning and snippet-building app for storing progra
 
 A concept can contain one or more examples, each example can contain placeholder slots, and each slot can provide selectable options. This lets a learner experiment with code patterns without rewriting the whole snippet, while also creating a foundation for a practical personal snippet library.
 
+## Current Status
+
+CodeWeave is a functional early prototype. The core data model and basic viewer are in place, and the next major milestone is completing the in-app editing workflow for examples, slots, and slot options.
+
 ## Project Goals
 
 CodeWeave is being built from scratch as a full-stack portfolio project with two goals:
@@ -59,6 +63,10 @@ Each placeholder maps to a slot. Each slot can have multiple selectable options,
 - `Message`: `clicked`, `submitted`, `hovered`
 
 The frontend parses the placeholder syntax, replaces each placeholder with an interactive control, and lets the user try different combinations.
+
+## Mobile Screen Shot
+
+![CodeWeave open slots](assets/screen_shot.png)
 
 ## Tech Stack
 
@@ -251,6 +259,3 @@ This project demonstrates:
 - Database seeding and migrations
 - Product thinking around learners, snippet reuse, validation, and future scalability
 
-## Current Status
-
-CodeWeave is a functional early prototype. The core data model and basic viewer are in place, and the next major milestone is completing the in-app editing workflow for examples, slots, and slot options.
