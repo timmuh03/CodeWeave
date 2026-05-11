@@ -3,18 +3,17 @@ import logging
 from fastapi import (APIRouter, Depends,
   HTTPException, status)
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from fastapi.responses import FileResponse
 
 from db import get_db
-from models.concept import Concept
-from models.example import (
-  Example)
+from models import Concept, Example, ExampleSlot, SlotOption
 from schemas import (
   ConceptCreate,
   ConceptRead,
   ConceptReadDown,
   ConceptUpdate,
+  ConceptUpdateFull,
   ExampleCreate,
   ExampleReadDown)
 
@@ -52,6 +51,56 @@ def create_concept(
   db.refresh(concept)
   
   return concept
+
+@router.post("/full",
+  response_model=ConceptReadDown,
+  status_code=status.HTTP_201_CREATED)
+def create_concept_full(
+  concept_data: ConceptCreate,
+  db: Session = Depends(get_db)
+):
+  try:
+    concept = Concept(
+      term=concept_data.term,
+      description=concept_data.description,
+      language=concept_data.language,
+    )
+  
+    db.add(concept)
+    db.flush()
+  
+    for example_data in concept_data.examples:
+      example = Example(
+        title=example_data.title,
+        text=example_data.text,
+        display_order=example_data.display_order,
+        concept_id=concept.id
+      )
+      db.add(example)
+      db.flush()
+      for slot_data in example_data.slots:
+        slot = ExampleSlot(
+          slot_label=slot_data.slot_label,
+          slot_type=slot_data.slot_type,
+          example_id=example.id
+        )
+        db.add(slot)
+        db.flush()
+        for option_data in slot_data.slot_options:
+          option = SlotOption(
+            option_text=option_data.option_text,
+            display_order=option_data.display_order,
+            slot_id=slot.id
+          )
+          db.add(option)
+  
+    db.commit()
+    db.refresh(concept)
+    return concept
+
+  except Exception as e:
+    db.rollback()
+    raise
 
 @router.get("/form", include_in_schema=False,
   status_code=status.HTTP_200_OK)
@@ -150,6 +199,64 @@ def update_concept(
 
   if concept_update.language is not None:
     concept.language = concept_update.language
+
+  db.commit()
+  db.refresh(concept)
+
+  return concept
+
+@router.put("/{concept_id}/full",
+  response_model=ConceptReadDown,
+  status_code=status.HTTP_200_OK)
+def update_concept_full(
+  concept_id: int,
+  concept_update: ConceptUpdateFull,
+  db: Session = Depends(get_db)
+):
+  concept = db.scalar(select(Concept).where(Concept.id == concept_id)
+    .options(selectinload(Concept.examples).selectinload(Example.slots).selectinload(ExampleSlot.slot_options)))
+
+  if not concept:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Concept not found")
+
+  concept.term = concept_update.term
+  concept.description = concept_update.description
+  concept.language = concept_update.language
+
+  existing_examples = {example.id: example for example in concept.examples}
+
+  submitted_example_ids = set()
+
+  for example_data in concept_update.examples:
+    if example_data.id:
+      submitted_example_ids.add(example_data.id)
+
+      example = existing_examples.get(example_data.id)
+
+      if not example:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+          detail=f"Example with id {example_data.id} not found")
+
+      example.title = example_data.title
+      example.text = example_data.text
+
+      # update this example's slots
+
+    else:
+      new_example = Example(
+        title=example_data.title,
+        text=example_data.text,
+        display_order=example_data.display_order,
+        concept_id=concept.id
+      )
+      db.add(new_example)
+      db.flush()
+
+      # add new slots/options for this example
+  
+  for example_id, example in existing_examples.items():
+    if example_id not in submitted_example_ids:
+      db.delete(example)
 
   db.commit()
   db.refresh(concept)

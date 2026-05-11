@@ -23,6 +23,43 @@ export async function fetchConceptDetails(
   return await response.json();
 }
 
+export async function createFullConcept(data) {
+  const response = await fetch('/concepts/full', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.error('Error saving concept:', error);
+    alert("Could not save concept");
+    throw Error("Could not save concept");
+  }
+
+  return await response.json();
+}
+
+export async function editFullConcept(conceptId, data) {
+  const response = await fetch(`/concepts/${conceptId}/full`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.error('Error editing concept:', error);
+    alert("Could not edit concept");
+  }
+
+  return await response.json();
+}
+
 export async function createConcept(data) {
   const response = await fetch('/concepts/', {
     method: 'POST', 
@@ -139,3 +176,4 @@ export async function deleteExample(exampleId) {
 
   return true;
 }
+

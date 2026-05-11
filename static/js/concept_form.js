@@ -1,6 +1,7 @@
 import { 
-  fetchConceptDetails, createConcept, editConcept,
-  deleteConcept, createExample, editExample, deleteExample
+  createConcept, editConcept, deleteConcept,
+  createExample, editExample, deleteExample,
+  createFullConcept, editFullConcept, fetchConceptDetails
 } from "/static/js/api.js"
 
 const saveBtn = document.getElementById('form-save-btn');
@@ -27,21 +28,39 @@ function getIdFromPath() {
   return null;
 }
 
-function getConceptData() {
+function getFormConceptData() {
   return {
     term: termField.value.trim(),
     description: descriptionField.value.trim(),
-    language: language.value.trim()
-  };
+    language: language.value.trim()  
+    }
+}
+
+function getFormExamplesData() {
+  const examples = document.querySelectorAll('.form-example-item');
+
+  return Array.from(examples).map((example, index) => {
+    const title = example.querySelector('.form-example-title').value.trim();
+    const text = example.querySelector('.form-example-text').value.trim();
+    const id = example.dataset.exampleId;
+    
+    return {
+      id: id ? Number(id) : null,
+      title: title,
+      text: text,
+      display_order: index,
+    }
+  })
+    .filter((example) => example.title || example.text || example.id);
 }
 
 function loadConceptData() {
-  if (!concept) return;
-
-  termField.value = concept.term || '';
-  descriptionField.value = concept.description || '';
-  language.value = concept.language || '';
-
+  if (concept) {
+    termField.value = concept.term || '';
+    descriptionField.value = concept.description || '';
+    language.value = concept.language || '';
+  }
+  
   loadExamples();
   loadAddExampleBtn();
 }
@@ -53,9 +72,10 @@ function loadExamples() {
   const examplesList = document.createElement('div');
   examplesList.className = 'form-examples-list';
 
-  concept.examples.forEach((example) => {
-    const exampleItem = createExampleItem(example);
-    exampleItem.classList.add(example.id);
+  const examples = concept?.examples || []
+
+  examples.forEach((example) => {
+    const exampleItem = createExampleItem(example)
     examplesList.appendChild(exampleItem);
   });
 
@@ -67,7 +87,7 @@ function createExampleItem(example) {
   const exampleItem = document.createElement('div');
   exampleItem.className = 'form-example-item';
   if (example.id) {
-    exampleItem.classList.add(example.id);
+    exampleItem.dataset.exampleId = example.id;
   } else {
     exampleItem.classList.add('new');
   }
@@ -87,7 +107,7 @@ function createExampleItem(example) {
 
   const exampleText = document.createElement('textarea');
   exampleText.className = 'form-example-text';
-  exampleText.textContent = example.text;
+  exampleText.value = example.text || '';
   // later will load example text without ##...## separators
 
   const deleteExampleBtn = loadDeleteExampleBtn(exampleItem, example.id);
@@ -108,6 +128,7 @@ function loadAddExampleBtn() {
   const addExampleBtn = document.createElement('button');
   addExampleBtn.className = 'add-example-btn';
   addExampleBtn.textContent = 'Add Snippet';
+  addExampleBtn.type = 'button';
 
   addExampleBtn.addEventListener('click', (event) =>{
     event.preventDefault();
@@ -129,10 +150,10 @@ function loadDeleteExampleBtn(exampleItem, exampleId) {
   const deleteExampleBtn = document.createElement('button');
   deleteExampleBtn.className = 'delete-example-btn';
   deleteExampleBtn.textContent = 'Delete Snippet';
+  deleteExampleBtn.type = 'button';
 
   deleteExampleBtn.addEventListener('click', async (event) => {
     event.preventDefault();
-    await deleteExample(exampleId);
     exampleItem.remove();
   });
 
@@ -142,10 +163,8 @@ function loadDeleteExampleBtn(exampleItem, exampleId) {
 async function setEventListeners() {
   conceptForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    
-    const data = getConceptData();
 
-    await saveConcept(conceptId, data);
+    await saveConcept();
   });
 
   deleteBtn.addEventListener('click', async (event) => {
@@ -157,39 +176,19 @@ async function setEventListeners() {
   });
 }
 
-async function saveConcept(conceptId, data) {
-  try {
-    if (conceptId) {
-      const savedConcept = await editConcept(conceptId, data);
-      console.log('Concept updated:', savedConcept);
-      
-      const examplesList = document.querySelector('.form-examples-list');
-      if (examplesList) {
-        const exampleItems = examplesList.querySelectorAll('.form-example-item');
-        exampleItems.forEach(async (item) => {
-          const exampleId = item.classList[1];
-          const title = item.querySelector('.form-example-title').value;
-          const text = item.querySelector('.form-example-text').value;
-          const exampleData = { title, text, };
+async function saveConcept() {
+  const conceptData = getFormConceptData();
+  const examplesData = getFormExamplesData();
 
-          if (exampleId != 'new') {
-            alert("Editing example " + exampleId + " with data " + JSON.stringify(exampleData))
-            await editExample(exampleId, exampleData);
-          } else {
-            await createExample(conceptId, exampleData);
-          }
-        });
-      }
-    } else {
-      const savedConcept = await createConcept(data);
-      console.log('Concept saved:', savedConcept);
-    }
+  conceptData.examples = examplesData
 
-    window.location.href = '/';
-  } catch (error) {
-    alert("Couldn't save concept: " + JSON.stringify(data));
-    alert(error);
+  if (!conceptId) {
+    await createFullConcept(conceptData);
+  } else {
+    await editFullConcept(conceptId, conceptData);
   }
+
+  window.location.href = '/';
 }
 
 loadConceptData();

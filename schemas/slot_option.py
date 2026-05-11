@@ -25,3 +25,8 @@ class SlotOptionReadUp(AppSchema):
 class SlotOptionUpdate(AppSchema):
   option_text: str | None = None
   display_order: int | None = None
+
+class SlotOptionUpdateFull(AppSchema):
+   id: int | None = None
+   option_text: str
+   display_order: int = 0

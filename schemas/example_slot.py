@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AppSchema(BaseModel):
@@ -7,13 +7,14 @@ class AppSchema(BaseModel):
 class ExampleSlotCreate(AppSchema):
   slot_label: str
   slot_type: str
+  slot_options: list["SlotOptionCreate"] = Field(default_factory=list)
 
 class ExampleSlotReadDown(AppSchema):
   id: int
   example_id: int
   slot_label: str
   slot_type: str
-  slot_options: list["SlotOptionRead"]
+  slot_options: list["SlotOptionRead"] = Field(default_factory=list)
 
 class ExampleSlotReadUp(AppSchema):
   id: int
@@ -26,3 +27,8 @@ class ExampleSlotUpdate(AppSchema):
   slot_label: str | None = None
   slot_type: str | None = None
 
+class ExampleSlotUpdateFull(AppSchema):
+   id: int | None = None
+   slot_label: str
+   slot_type: str
+   slot_options: list["SlotOptionUpdateFull"] = Field(default_factory=list)
