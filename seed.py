@@ -9,6 +9,7 @@ from models.slot_option import SlotOption
 seed_data = [
   {
     "term": "addEventListener",
+    "language": "javascript",
     "description": (
       "Attaches a function to run when "
       "a specific event happens on an "
@@ -147,6 +148,7 @@ seed_data = [
   },
   {
     "term": "querySelector",
+    "language": "javascript",
     "description": (
       "Returns the first element that "
       "matches a CSS selector."
@@ -234,6 +236,7 @@ seed_data = [
   },
   {
     "term": "fetch",
+    "language": "javascript",
     "description": (
       "Makes an HTTP request and returns "
       "a promise for the response."
@@ -325,6 +328,7 @@ seed_data = [
   },
   {
     "term": "map",
+    "language": "javascript",
     "description": (
       "Creates a new array by transforming "
       "each item in an existing array."
@@ -398,6 +402,7 @@ seed_data = [
   },
   {
     "term": "setTimeout",
+    "language": "javascript",
     "description": (
       "Runs a function once after a delay."
     ),
@@ -466,6 +471,7 @@ def seed_db() -> None:
     for concept_data in seed_data:
       concept = Concept(
         term=concept_data["term"],
+        language=concept_data["language"]
         description=concept_data["description"],
       )
 

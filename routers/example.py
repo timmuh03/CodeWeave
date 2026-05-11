@@ -11,6 +11,7 @@ from models.example import (
   Example)
 from schemas import (
   ExampleCreate,
+  ExampleRead,
   ExampleReadUp, 
   ExampleReadDown,
   ExampleUpdate)
@@ -21,15 +22,20 @@ router = APIRouter(
   tags=["Examples"])
 
 
-@router.post("/concepts/{concept_id}/"
-  "examples",
-  response_model=ExampleReadUp,
+@router.post("/concepts/{concept_id}/examples",
+  response_model=ExampleRead,
   status_code=status.HTTP_201_CREATED)
 def create_example(
   concept_id: int,
   example_data: ExampleCreate,
   db: Session = Depends(get_db),
 ):
+  print("CREATE EXAMPLE ROUTE HIT")
+
+  print("concept_id:", concept_id)
+
+  print("example_data:", example_data)
+  
   concept = db.scalar(
     select(Concept).where(
       Concept.id == concept_id))
@@ -52,7 +58,17 @@ def create_example(
   db.commit()
   db.refresh(example)
 
-  return example
+  print("EXAMPLE CREATED:", example.id)
+
+  print("RETURNING EXAMPLE")
+
+  return {
+      "id": example.id,
+      "concept_id": example.concept_id,
+      "title": example.title,
+      "text": example.text,
+      "display_order": example.display_order,
+  }
 
 @router.delete("/examples/{example_id}",
   status_code=status.HTTP_204_NO_CONTENT)

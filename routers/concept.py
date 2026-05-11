@@ -145,11 +145,8 @@ def update_concept(
   if concept_update.term is not None:
     concept.term = concept_update.term
 
-  if (
-    concept_update.description
-    is not None):
-    concept.description = (
-      concept_update.description)
+  if concept_update.description is not None:
+    concept.description = concept_update.description
 
   if concept_update.language is not None:
     concept.language = concept_update.language

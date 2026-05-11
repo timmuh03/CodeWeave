@@ -266,7 +266,8 @@ li:not(:last-child) {
   width: 100px;
 }
 
-#delete-btn,
+.add-example-btn,
+#delete-concept-btn,
 #add-concept-btn,
 #back-btn,
 #form-save-btn {
@@ -284,12 +285,12 @@ li:not(:last-child) {
 
 #delete-shell {
   display: flex;
-  justify-content: right;
+  justify-content: center;
 }
 
-#delete-btn {
+#delete-concept-btn {
   background-color: #dc3545;
-  padding: 0 10px;
+  padding: 10px;
   margin-top: 10px;
 }
 
@@ -319,7 +320,8 @@ li:not(:last-child) {
   margin-right: 50px;
 }
 
-#delete-btn,
+.add-example-btn,
+#delete-concept-btn,
 #form-save-btn {
   width: auto;
   font-size: 1.5rem;

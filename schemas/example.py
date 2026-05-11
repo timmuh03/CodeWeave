@@ -32,7 +32,6 @@ class ExampleReadUp(AppSchema):
   title: str
   text: str
   display_order: int = 0
-  concept: "ConceptRead"
 
 class ExampleUpdate(AppSchema):
   title: str | None = None

@@ -4,7 +4,8 @@ from schemas.concept import (
   ConceptReadDown, 
   ConceptUpdate)
 from schemas.example import (
-  ExampleCreate, 
+  ExampleCreate,
+  ExampleRead,
   ExampleReadDown, 
   ExampleReadUp, 
   ExampleUpdate)
@@ -27,3 +28,5 @@ ConceptRead.model_rebuild()
 ExampleReadUp.model_rebuild()
 ExampleSlotReadUp.model_rebuild()
 SlotOptionReadUp.model_rebuild()
+ExampleRead.model_rebuild()
+SlotOptionRead.model_rebuild()
