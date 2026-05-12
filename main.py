@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import (
 RedirectResponse, FileResponse)
 
-from db import check_db_connection, engine
+from db import engine
 from models.base import Base
 import routers
 
@@ -30,7 +30,6 @@ logging.basicConfig(level=logging.INFO)
 
 Base.metadata.create_all(bind=engine)
 
-SHOW_DOCS = True
 SHOW_DOCS = False
 
 @app.get("/", include_in_schema=False)

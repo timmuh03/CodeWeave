@@ -16,7 +16,7 @@ class SlotOptionRead(AppSchema):
   display_order: int = 0
 
 class SlotOptionReadUp(AppSchema):
-  id:  int
+  id: int
   slot_id: int
   option_text: str
   display_order: int = 0
@@ -27,6 +27,6 @@ class SlotOptionUpdate(AppSchema):
   display_order: int | None = None
 
 class SlotOptionUpdateFull(AppSchema):
-   id: int | None = None
-   option_text: str
-   display_order: int = 0
+  id: int | None = None
+  option_text: str
+  display_order: int = 0

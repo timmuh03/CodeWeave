@@ -28,7 +28,7 @@ class ExampleSlotUpdate(AppSchema):
   slot_type: str | None = None
 
 class ExampleSlotUpdateFull(AppSchema):
-   id: int | None = None
-   slot_label: str
-   slot_type: str
-   slot_options: list["SlotOptionUpdateFull"] = Field(default_factory=list)
+  id: int | None = None
+  slot_label: str
+  slot_type: str
+  slot_options: list["SlotOptionUpdateFull"] = Field(default_factory=list)

@@ -14,8 +14,7 @@ from schemas import (
   ConceptReadDown,
   ConceptUpdate,
   ConceptUpdateFull,
-  ExampleCreate,
-  ExampleReadDown)
+  )
 
 router = APIRouter(
   prefix="/concepts",
@@ -98,7 +97,7 @@ def create_concept_full(
     db.refresh(concept)
     return concept
 
-  except Exception as e:
+  except Exception:
     db.rollback()
     raise
 

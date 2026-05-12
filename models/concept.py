@@ -1,5 +1,4 @@
-from sqlalchemy import (ForeignKey, String, 
-  Text)
+from sqlalchemy import String
 from sqlalchemy.orm import (Mapped, 
   mapped_column, relationship)
 

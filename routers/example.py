@@ -30,12 +30,6 @@ def create_example(
   example_data: ExampleCreate,
   db: Session = Depends(get_db),
 ):
-  print("CREATE EXAMPLE ROUTE HIT")
-
-  print("concept_id:", concept_id)
-
-  print("example_data:", example_data)
-  
   concept = db.scalar(
     select(Concept).where(
       Concept.id == concept_id))
@@ -57,10 +51,6 @@ def create_example(
   db.add(example)
   db.commit()
   db.refresh(example)
-
-  print("EXAMPLE CREATED:", example.id)
-
-  print("RETURNING EXAMPLE")
 
   return {
       "id": example.id,

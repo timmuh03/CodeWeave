@@ -26,7 +26,6 @@ class ExampleReadDown(AppSchema):
   display_order: int = 0
   
   slots: list["ExampleSlotReadDown"] = Field(default_factory=list)
-
 class ExampleReadUp(AppSchema):
   id: int
   concept_id: int
