@@ -223,13 +223,11 @@ def update_concept_full(
   concept.language = concept_update.language
 
   existing_examples = {example.id: example for example in concept.examples}
-
   submitted_example_ids = set()
 
   for example_data in concept_update.examples:
     if example_data.id:
       submitted_example_ids.add(example_data.id)
-
       example = existing_examples.get(example_data.id)
 
       if not example:
@@ -238,8 +236,72 @@ def update_concept_full(
 
       example.title = example_data.title
       example.text = example_data.text
+      example.display_order = example_data.display_order
 
-      # update this example's slots
+      existing_slots = {slot.id: slot for slot in example.slots}
+      submitted_slot_ids = set()
+
+      for slot_data in example_data.slots:
+        if slot_data.id:
+          submitted_slot_ids.add(slot_data.id)
+          slot = existing_slots.get(slot_data.id)
+
+          if not slot:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+              detail=f"Slot with id {slot_data.id} not found")
+
+          slot.slot_label = slot_data.slot_label
+          slot.slot_type = slot_data.slot_type
+          
+          existing_options = {option.id: option for option in slot.slot_options}
+          submitted_option_ids = set()
+  
+          for option_data in slot_data.slot_options:
+            if option_data.id:
+              submitted_option_ids.add(option_data.id)
+              option = existing_options.get(option_data.id)
+  
+              if not option:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                  detail=f"Option with id {option_data.id} not found")
+  
+              option.option_text = option_data.option_text
+              option.display_order = option_data.display_order
+  
+            else:
+              new_option = SlotOption(
+                option_text=option_data.option_text,
+                display_order=option_data.display_order,
+                slot_id=slot.id
+              )
+              db.add(new_option)
+              db.flush()
+
+          for option_id, option in existing_options.items():
+            if option_id not in submitted_option_ids:
+              db.delete(option)
+
+        else:
+          new_slot = ExampleSlot(
+            slot_label=slot_data.slot_label,
+            slot_type=slot_data.slot_type,
+            example_id=example.id
+          )
+          db.add(new_slot)
+          db.flush()
+
+          for option_data in slot_data.slot_options:
+            new_option = SlotOption(
+              option_text=option_data.option_text,
+              display_order=option_data.display_order,
+              slot_id=new_slot.id
+            )
+            db.add(new_option)
+            db.flush()
+
+      for slot_id, slot in existing_slots.items():
+        if slot_id not in submitted_slot_ids:
+          db.delete(slot)
 
     else:
       new_example = Example(
@@ -251,13 +313,41 @@ def update_concept_full(
       db.add(new_example)
       db.flush()
 
-      # add new slots/options for this example
+      for slot_data in example_data.slots:
+        new_slot = ExampleSlot(
+          slot_label=slot_data.slot_label,
+          slot_type=slot_data.slot_type,
+          example_id=new_example.id
+        )
+        db.add(new_slot)
+        db.flush()
+
+        for option_data in slot_data.slot_options:
+          new_option = SlotOption(
+            option_text=option_data.option_text,
+            display_order=option_data.display_order,
+            slot_id=new_slot.id
+          )
+          db.add(new_option)
+          db.flush()
   
   for example_id, example in existing_examples.items():
     if example_id not in submitted_example_ids:
       db.delete(example)
 
-  db.commit()
-  db.refresh(concept)
+  try:
+    db.commit()
+    update_concept = db.scalar(select(Concept).where(Concept.id == concept_id)
+      .options(
+      selectinload(Concept.examples)
+      .selectinload(Example.slots)
+      .selectinload(ExampleSlot.slot_options)
+      )
+    )
+
+  except Exception as e:
+    db.rollback()
+    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+      detail=f"An error occurred: {str(e)}")
 
   return concept
