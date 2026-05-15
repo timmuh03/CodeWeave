@@ -1,6 +1,10 @@
 from pydantic import BaseModel, ConfigDict, Field
 
-
+from schemas import(
+  ExampleCreate, 
+  ExampleReadDown,
+  ExampleUpdateFull
+)
 
 class AppSchema(BaseModel):
   model_config = ConfigDict(from_attributes=True)
@@ -9,14 +13,14 @@ class ConceptCreate(AppSchema):
   term: str
   description: str
   language: str | None = None
-  examples: list["ExampleCreate"] = Field(default_factory=list)
+  examples: list[ExampleCreate] = Field(default_factory=list)
 
 class ConceptReadDown(AppSchema):
   term: str
   language: str | None = None
   description: str
   id: int
-  examples: list["ExampleReadDown"] = Field(default_factory=list)
+  examples: list[ExampleReadDown] = Field(default_factory=list)
 
 class ConceptRead(AppSchema):
   term: str
@@ -33,4 +37,4 @@ class ConceptUpdateFull(AppSchema):
   term: str
   description: str
   language: str
-  examples: list["ExampleUpdateFull"] = Field(default_factory=list)
+  examples: list[ExampleUpdateFull] = Field(default_factory=list)
