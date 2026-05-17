@@ -96,28 +96,38 @@ function createExampleItem(example) {
   titleLabel.textContent = 'Title';
   titleLabel.for = 'form-example-title';
 
-  const exampleTitle = document.createElement('input');
-  exampleTitle.type = 'text';
-  exampleTitle.className = 'form-example-title';
-  exampleTitle.value = example.title || '';
+  const exampleTitlePre = document.createElement('pre');
+  const exampleTitleCode = document.createElement('code');
+  exampleTitleCode.className = 'form-example-title';
+  exampleTitleCode.textContent = example.title || '';
+  exampleTitlePre.appendChild(exampleTitleCode);
 
   const textLabel = document.createElement('label');
   textLabel.textContent = 'Snippet';
   textLabel.for = 'form-example-text';
 
-  const exampleText = document.createElement('textarea');
-  exampleText.className = 'form-example-text';
-  exampleText.value = example.text || '';
+  const exampleTextPre = document.createElement('pre');
+  const exampleTextCode = document.createElement('code');
+  exampleTextCode.className = 'form-example-text';
+  exampleTextCode.textContent = example.text || '';
+  exampleTextPre.appendChild(exampleTextCode);
   // later will load example text without ##...## separators
 
+  const exampleBtnsShell = document.createElement('div');
+  exampleBtnsShell.className = 'form-example-btns-shell';
+  
   const deleteExampleBtn = loadDeleteExampleBtn(exampleItem, example.id);
+  const editExampleBtn = loadEditExampleBtn(exampleItem, example.id);
+
+  exampleBtnsShell.appendChild(deleteExampleBtn);
+  exampleBtnsShell.appendChild(editExampleBtn);
 
   exampleItem.appendChild(titleLabel);
-  exampleItem.appendChild(exampleTitle);
+  exampleItem.appendChild(exampleTitlePre);
   exampleItem.appendChild(textLabel);
-  exampleItem.appendChild(exampleText);
-  exampleItem.appendChild(deleteExampleBtn);
-
+  exampleItem.appendChild(exampleTextPre);
+  exampleItem.appendChild(exampleBtnsShell);
+  
   return exampleItem;
 }
 
@@ -158,6 +168,20 @@ function loadDeleteExampleBtn(exampleItem, exampleId) {
   });
 
   return deleteExampleBtn;
+}
+
+function loadEditExampleBtn(exampleItem, exampleId) {
+  const editExampleBtn = document.createElement('button');
+  editExampleBtn.className = 'edit-example-btn';
+  editExampleBtn.textContent = 'Edit Snippet';
+  editExampleBtn.type = 'button';
+
+  editExampleBtn.addEventListener('click', async (event) => {
+     event.preventDefault();
+     // later will load edit form for example
+  });
+
+  return editExampleBtn;
 }
 
 async function setEventListeners() {

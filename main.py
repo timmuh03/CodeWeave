@@ -31,7 +31,7 @@ logging.basicConfig(level=logging.INFO)
 Base.metadata.create_all(bind=engine)
 
 SHOW_DOCS = False
-SHOW_DOCS = True
+# SHOW_DOCS = True
 
 @app.get("/", include_in_schema=False)
 def read_root():
