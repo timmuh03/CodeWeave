@@ -14,6 +14,7 @@ from schemas import (
   ConceptReadDown,
   ConceptUpdate,
   ConceptUpdateFull,
+  ConceptTitle,
   )
 
 router = APIRouter(
@@ -113,15 +114,11 @@ def edit_concept_form():
 
 @router.get(
   "/",
-  response_model=list[ConceptRead],
+  response_model=list[ConceptTitle],
   status_code=status.HTTP_200_OK
 )
-def get_concepts(
-  db: Session = Depends(get_db)
-):
-  concepts = (
-    db.scalars(select(Concept)).all()
-    )
+def get_concepts(db: Session = Depends(get_db)):
+  concepts = db.execute(select(Concept.id, Concept.term)).mappings().all()
 
   if not concepts:
     logger.info("No concepts found")
@@ -133,19 +130,12 @@ def get_concepts(
   response_model=ConceptReadDown,
   status_code=status.HTTP_200_OK
 )
-def get_concept(
-  concept_id: int,
-  db: Session = Depends(get_db)
-):
-  concept = db.scalar(
-    select(Concept).where(
-      Concept.id == concept_id)
-  )
+def get_concept(concept_id: int, db: Session = Depends(get_db)):
+  concept = db.scalar(select(Concept).where(Concept.id == concept_id))
   
   if not concept:
     raise HTTPException(
-      status_code=status.
-      HTTP_404_NOT_FOUND,
+      status_code=status.HTTP_404_NOT_FOUND,
       detail="Concept not found"
     )
 
@@ -155,17 +145,11 @@ def get_concept(
   "/{concept_id}",
   status_code=status.HTTP_204_NO_CONTENT
 )
-def delete_concept(
-  concept_id: int,
-  db: Session = Depends(get_db)
-):
-  concept = db.scalar(
-    select(Concept).where(
+def delete_concept(concept_id: int, db: Session = Depends(get_db)):
+  concept = db.scalar(select(Concept).where(
       Concept.id == concept_id))
   if not concept:
-    raise HTTPException(
-      status_code=status.
-      HTTP_404_NOT_FOUND,
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
       detail="Concept not found"
     )
 
@@ -180,14 +164,11 @@ def update_concept(
   concept_update: ConceptUpdate,
   db: Session = Depends(get_db)
 ):
-  concept = db.scalar(
-    select(Concept).where(
-      Concept.id == concept_id))
+  concept = db.scalar(select(Concept).where(Concept.id == concept_id))
   
   if not concept:
     raise HTTPException(
-      status_code=status.
-      HTTP_404_NOT_FOUND,
+      status_code=status.HTTP_404_NOT_FOUND,
       detail="Concept not found")
 
   if concept_update.term is not None:
@@ -337,7 +318,7 @@ def update_concept_full(
 
   try:
     db.commit()
-    update_concept = db.scalar(select(Concept).where(Concept.id == concept_id)
+    updated_concept = db.scalar(select(Concept).where(Concept.id == concept_id)
       .options(
       selectinload(Concept.examples)
       .selectinload(Example.slots)
@@ -350,4 +331,4 @@ def update_concept_full(
     raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
       detail=f"An error occurred: {str(e)}")
 
-  return concept
+  return updated_concept

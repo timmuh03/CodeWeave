@@ -1,5 +1,27 @@
+# Python
 __pycache__/
 *.pyc
 .venv/
 .env
+
+# Local databases
 app.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Node / Vite / React
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS/editor files
+.DS_Store
+.vscode/
