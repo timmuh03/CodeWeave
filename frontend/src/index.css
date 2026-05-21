@@ -10,3 +10,14 @@ body {
   color: #f4f4f4;
   background-color: #333;
 }
+
+ul {
+  list-style: none;
+  border-top: 1px solid #f4f4f4;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+ul li {
+  padding: 10px;
+  border-bottom: 1px solid #505050;
+}
