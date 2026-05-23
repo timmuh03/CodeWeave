@@ -1,23 +1,53 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   fetchConcepts,
   fetchConcept,
-  createFullConcept,
 } from "./api/concepts";
 import "./App.css";
 
-function App() {
+ export default function App() {
   const [conceptsLight, setConcepts] = useState([]);
   const [openedConcepts, setOpenedConcepts] = useState([]);
   const [conceptsFull, setConceptsFull] = useState({});
 
+  const conceptQueueRef = useRef([]);
+  const isLoadingRef = useRef(false);
+
   useEffect(() => {
-    loadConceptList();
+    async function startQueue() {
+      const list = await loadConceptList();
+
+      conceptQueueRef.current = list.map((concept) => concept.id);
+      loadConceptListDetails()
+    }
+    startQueue();
   }, []);
 
   async function loadConceptList() {
     const list = await fetchConcepts();
     setConcepts(list);
+
+    return list;
+  }
+
+  async function loadConceptListDetails() {
+    if (isLoadingRef.current) {
+      return;
+    }
+
+    isLoadingRef.current = true;
+
+    while (conceptQueueRef.current.length > 0) {
+      const conceptId = conceptQueueRef.current.shift();
+
+      if (conceptsFull[conceptId]) {
+        continue;
+      }
+
+      await loadConceptDetails(conceptId);
+    }
+
+    isLoadingRef.current = false;
   }
 
   async function handleConceptTermClick(conceptId) {
@@ -39,12 +69,18 @@ function App() {
   }
 
   async function loadConceptDetails(conceptId) {
-    const details = await fetchConcept(conceptId);
-
-    setConceptsFull((currentConcepts) => ({
-      ...currentConcepts,
-      [conceptId]: details,
-    }));
+    try {
+      const details = await fetchConcept(conceptId);
+  
+      setConceptsFull((currentConcepts) => ({
+        ...currentConcepts,
+        [conceptId]: details,
+      }));
+      return details;
+    } catch (error) {
+      console.error(`Failed to load concept details for ${conceptId}:`, error);
+      return null;
+    }
   }
   
   return (
@@ -77,5 +113,3 @@ function App() {
     </main>
   )
 }
-
-export default App;
