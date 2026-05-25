@@ -91,6 +91,29 @@ export default function App() {
     ];
   }
 
+  function renderExsmpleText(exampleText, slots) {
+    const parts = exampleText.split(/(##.*?##)/);
+    return parts.map((part, index) => {
+      const isSlot = part.startsWith("##") && part.endsWith("##");
+
+      if (!isSlot) {
+        return <span key={index}>{part}</span>
+      }
+      
+      const slotLabel = part.slice(2, -2);
+    
+      const slot = slots.find((slot) => slot.slot_label === slotLabel);
+
+      const optionText = slot?.slot_options?.[0]?.option_text || slotLabel;
+
+      return (
+        <span key={`${slotLabel}-${index}`} className="example-slot">
+          {optionText}
+        </span>  
+      );
+    });
+  }
+
   return (
     <main className="app">
       <header className="app-header">
@@ -119,15 +142,20 @@ export default function App() {
                       {fullConcept.language}
                     </div>
                   )}
-                  {fullConcept?.examples && (
+                  {fullConcept?.examples?.[0] && (
                     <div className="concept-examples">
                       {fullConcept.examples[0].title}
                     </div>
                   )}
-                  {fullConcept?.examples && (
-                    <div className="concept-examples">
-                      {fullConcept.examples[0].text}
-                    </div>
+                  {fullConcept?.examples?.[0] && (
+                    <pre>
+                      <code>
+                        {renderExsmpleText(
+                          fullConcept.examples[0].text,
+                          fullConcept.examples[0].slots
+                        )}
+                      </code>
+                    </pre>
                   )}
                 </div>
               )}
