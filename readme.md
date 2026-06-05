@@ -83,7 +83,7 @@ The frontend parses the placeholder syntax, replaces each placeholder with an in
 
 - HTML
 - CSS
-- Vanilla JavaScript modules
+- React
 - Browser Fetch API
 
 ## Repository Structure
