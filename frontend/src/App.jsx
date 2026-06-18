@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import {
-  fetchConcepts,
-  fetchConcept,
-} from "./api/concepts";
+import { fetchConcepts, fetchConcept } from "./api/concepts";
+import ConceptList from "./components/ConceptList";
 import "./App.css";
 
 export default function App() {
-  const [conceptsLight, setConcepts] = useState([]);
-  const [openedConcepts, setOpenedConcepts] = useState([]);
+  const [conceptsLight, setConceptsLight] = useState([]);
   const [conceptsFull, setConceptsFull] = useState({});
+  const [openedConcepts, setOpenedConcepts] = useState([]);
+  const [openedExampleIds, setOpenedExampleIds] = useState([]);
+  const [activeExampleIds, setActiveExampleIds] = useState({});
 
   const conceptQueueRef = useRef([]);
   const isLoadingRef = useRef(false);
@@ -18,14 +18,14 @@ export default function App() {
       const list = await loadConceptList();
 
       conceptQueueRef.current = list.map((concept) => concept.id);
-      loadConceptListDetails()
+      loadConceptListDetails();
     }
     startQueue();
   }, []);
 
   async function loadConceptList() {
     const list = await fetchConcepts();
-    setConcepts(list);
+    setConceptsLight(list);
 
     return list;
   }
@@ -48,7 +48,7 @@ export default function App() {
         await loadConceptDetails(conceptId);
       }
     } finally {
-    isLoadingRef.current = false;
+      isLoadingRef.current = false;
     }
   }
 
@@ -67,7 +67,7 @@ export default function App() {
     }
   }
 
-  async function handleConceptTermClick(conceptId) {
+  function onConceptTermClick(conceptId) {
     const isOpen = openedConcepts.includes(conceptId);
 
     if(isOpen) {
@@ -91,79 +91,21 @@ export default function App() {
     ];
   }
 
-  function renderExsmpleText(exampleText, slots) {
-    const parts = exampleText.split(/(##.*?##)/);
-    return parts.map((part, index) => {
-      const isSlot = part.startsWith("##") && part.endsWith("##");
-
-      if (!isSlot) {
-        return <span key={index}>{part}</span>
-      }
-      
-      const slotLabel = part.slice(2, -2);
-    
-      const slot = slots.find((slot) => slot.slot_label === slotLabel);
-
-      const optionText = slot?.slot_options?.[0]?.option_text || slotLabel;
-
-      return (
-        <span key={`${slotLabel}-${index}`} className="example-slot">
-          {optionText}
-        </span>  
-      );
-    });
-  }
-
   return (
     <main className="app">
       <header className="app-header">
         <h1>Concepts</h1>
       </header>
-      <section className="concept-list-section">
-        <ul className="concept-list">
-          {conceptsLight.map((concept) => {
-            const isOpen = openedConcepts.includes(concept.id);
-            const fullConcept = conceptsFull[concept.id];
-      
-            return (
-            <li key={concept.id} className="concept-term">
-              <div className="concept-term-arrow"
-                onClick={() => handleConceptTermClick(concept.id)}
-              >
-                {concept.term}
-              </div>              
-              {isOpen && (
-                <div className="concept-details">
-                  <div className="concept-description">
-                    {fullConcept ? fullConcept.description : "Loading..."}
-                  </div>
-                  {fullConcept?.language && (
-                    <div className="concept-language">
-                      {fullConcept.language}
-                    </div>
-                  )}
-                  {fullConcept?.examples?.[0] && (
-                    <div className="concept-examples">
-                      {fullConcept.examples[0].title}
-                    </div>
-                  )}
-                  {fullConcept?.examples?.[0] && (
-                    <pre>
-                      <code>
-                        {renderExsmpleText(
-                          fullConcept.examples[0].text,
-                          fullConcept.examples[0].slots
-                        )}
-                      </code>
-                    </pre>
-                  )}
-                </div>
-              )}
-            </li>
-            );
-          })}
-        </ul>
-      </section>
+      <ConceptList
+        conceptsLight={conceptsLight}
+        conceptsFull={conceptsFull}
+        openedConcepts={openedConcepts}
+        onConceptTermClick={onConceptTermClick}
+        openedExampleIds={openedExampleIds}
+        setOpenedExampleIds={setOpenedExampleIds}
+        activeExampleIds={activeExampleIds}
+        setActiveExampleIds={setActiveExampleIds}
+      />
     </main>
   )
 }

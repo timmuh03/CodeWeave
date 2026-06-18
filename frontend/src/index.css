@@ -21,3 +21,7 @@ ul li {
   padding: 10px;
   border-bottom: 1px solid #505050;
 }
+
+.clickable {
+  cursor: pointer;
+}
