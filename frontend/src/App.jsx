@@ -7,7 +7,7 @@ export default function App() {
   const [conceptsLight, setConceptsLight] = useState([]);
   const [conceptsFull, setConceptsFull] = useState({});
   const [openedConcepts, setOpenedConcepts] = useState([]);
-  const [openedExampleIds, setOpenedExampleIds] = useState([]);
+  const [openedExampleMenuConceptIds, setOpenedExampleMenuConceptIds] = useState([]);
   const [activeExampleIds, setActiveExampleIds] = useState({});
 
   const conceptQueueRef = useRef([]);
@@ -101,8 +101,8 @@ export default function App() {
         conceptsFull={conceptsFull}
         openedConcepts={openedConcepts}
         onConceptTermClick={onConceptTermClick}
-        openedExampleIds={openedExampleIds}
-        setOpenedExampleIds={setOpenedExampleIds}
+        openedExampleMenuConceptIds={openedExampleMenuConceptIds}
+        setOpenedExampleMenuConceptIds={setOpenedExampleMenuConceptIds}
         activeExampleIds={activeExampleIds}
         setActiveExampleIds={setActiveExampleIds}
       />

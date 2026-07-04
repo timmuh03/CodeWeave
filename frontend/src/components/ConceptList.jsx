@@ -3,7 +3,7 @@ import Examples from "./Examples"
 export default function ConceptList({ 
   conceptsLight, conceptsFull, openedConcepts, 
   onConceptTermClick, 
-  openedExampleIds, setOpenedExampleIds,
+  openedExampleMenuConceptIds, setOpenedExampleMenuConceptIds,
   activeExampleIds, setActiveExampleIds,
 }) {
   return (
@@ -35,8 +35,8 @@ export default function ConceptList({
                   <Examples
                     examples={fullConcept.examples}
                     exampleConceptId={fullConcept.id}
-                    openedExampleIds={openedExampleIds}
-                    setOpenedExampleIds={setOpenedExampleIds}
+                    openedExampleMenuConceptIds={openedExampleMenuConceptIds}
+                    setOpenedExampleMenuConceptIds={setOpenedExampleMenuConceptIds}
                     activeExampleIds={activeExampleIds}
                     setActiveExampleIds={setActiveExampleIds}
                   />
