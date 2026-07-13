@@ -1,21 +1,25 @@
 # CodeWeave
 
-CodeWeave is an early-stage learning and snippet-building app for storing programming concepts, examples, and reusable code patterns. The app is built around a simple idea: code examples are easier to learn and reuse when the parts that commonly change are treated as editable "slots."
+CodeWeave is an early-stage learning and snippet-building application for storing programming concepts, examples, and reusable code patterns. It is built around a simple idea: code examples become easier to understand and reuse when the parts that commonly change are represented as editable **slots**.
 
-A concept can contain one or more examples, each example can contain placeholder slots, and each slot can provide selectable options. This lets a learner experiment with code patterns without rewriting the whole snippet, while also creating a foundation for a practical personal snippet library.
+A concept can contain one or more examples, each example can contain placeholder slots, and each slot can provide selectable options. This allows a learner to experiment with code patterns without rewriting an entire snippet while also creating the foundation for a practical personal snippet library.
 
 ## Current Status
 
-CodeWeave is a functional early prototype. The core data model and basic viewer are in place, and the next major milestone is completing the in-app editing workflow for examples, slots, and slot options.
+**CodeWeave is a functional, locally run prototype under active development. It is not currently deployed.**
+
+The core data model, API, concept viewer, concept create/edit workflow, and interactive slot rendering are working. The next major milestone is completing the user interface for creating and managing examples, slots, and slot options.
+
+CodeWeave currently operates as a single-user development prototype. Authentication, user accounts, and content ownership are intentionally deferred until the core authoring and snippet-building workflows are complete and stable.
 
 ## Project Goals
 
-CodeWeave is being built from scratch as a full-stack portfolio project with two goals:
+CodeWeave is being built from scratch as a full-stack portfolio project with two primary goals:
 
-1. **Learning tool** - Help newer developers understand common programming concepts through interactive examples.
-2. **Snippet tool** - Give more experienced developers a place to store, customize, and eventually copy reusable snippets into their own projects.
+1. **Learning tool** - Help newer developers understand programming concepts through interactive examples.
+2. **Snippet tool** - Give developers a place to store, customize, and eventually copy reusable snippets into their own projects.
 
-The project is intentionally being developed in stages so the core data model, CRUD behavior, and UI interactions are solid before adding larger-scale features.
+The project is being developed in stages so the data model, CRUD behavior, and core user interactions are solid before authentication, deployment, and larger-scale features are introduced.
 
 ## Current Features
 
@@ -23,18 +27,28 @@ The project is intentionally being developed in stages so the core data model, C
 - [x] SQLAlchemy models for concepts, examples, slots, and slot options
 - [x] SQLite-compatible local database setup
 - [x] Alembic migration setup
-- [x] API routes for concept CRUD operations
-- [x] API routes for examples, slots, and slot options
-- [x] Health check endpoints
+- [x] REST-style routes for concepts, examples, slots, and slot options
+- [x] Nested API operations for saving concepts with related content
+- [x] Health-check endpoints
 - [x] Static frontend served by FastAPI
 - [x] Concept list page
 - [x] Concept create/edit form
 - [x] Expandable concept details
 - [x] Example rendering for each concept
 - [x] Slot placeholder parsing using `##Slot Label##` syntax
-- [x] Interactive slot option selection in rendered examples
-- [x] Client-side search and sort controls
+- [x] Interactive slot-option selection in rendered examples
+- [x] Client-side search and alphabetical sorting
 - [x] Seed data for initial learning examples
+
+## Current Limitations
+
+- The visual editing workflow for examples, slots, and slot options is incomplete.
+- Authentication and user ownership are not yet implemented.
+- The application currently uses SQLite for local development.
+- The project is not yet deployed as a public demo.
+- Automated test coverage is still planned.
+
+These limitations reflect the project's current development stage rather than its intended final scope.
 
 ## How It Works
 
@@ -47,7 +61,7 @@ Concept
         `-- Slot Option
 ```
 
-For example, an `addEventListener` concept can have an example like:
+For example, an `addEventListener` concept can contain an example such as:
 
 ```js
 document.querySelector("##Target##")
@@ -62,9 +76,9 @@ Each placeholder maps to a slot. Each slot can have multiple selectable options,
 - `Event Type`: `click`, `submit`, `keydown`
 - `Message`: `clicked`, `submitted`, `hovered`
 
-The frontend parses the placeholder syntax, replaces each placeholder with an interactive control, and lets the user try different combinations.
+The frontend parses the placeholder syntax, replaces each placeholder with an interactive control, and allows the user to try different combinations without rewriting the full example.
 
-## Mobile Screen Shot
+## Mobile Screenshot
 
 ![CodeWeave open slots](assets/screen_shot.png)
 
@@ -83,8 +97,13 @@ The frontend parses the placeholder syntax, replaces each placeholder with an in
 
 - HTML
 - CSS
-- React
+- Modular vanilla JavaScript
 - Browser Fetch API
+
+### Development Environment
+
+- Replit
+- Git and GitHub
 
 ## Repository Structure
 
@@ -93,69 +112,83 @@ CodeWeave/
 |-- alembic/              # Database migration configuration and versions
 |-- models/               # SQLAlchemy database models
 |-- routers/              # FastAPI route modules
-|-- schemas/              # Pydantic request/response schemas
+|-- schemas/              # Pydantic request and response schemas
 |-- static/
 |   |-- js/               # Frontend JavaScript modules
-|   `-- styles.css        # App styling
+|   `-- styles.css        # Application styling
 |-- templates/            # HTML pages served by FastAPI
-|-- db.py                 # Database engine/session setup
+|-- db.py                 # Database engine, session, and dependency setup
 |-- main.py               # FastAPI application entry point
-|-- seed.py               # Local seed data script
+|-- seed.py               # Local seed-data script
 `-- requirements.txt      # Python dependencies
 ```
 
 ## Local Development
 
-### 1. Create and activate a virtual environment
+### Prerequisites
+
+- Python 3.11 or newer
+- Git
+
+### 1. Clone the repository
 
 ```bash
-python -m venv .venv
+git clone https://github.com/timmuh03/CodeWeave.git
+cd CodeWeave
+```
+
+### 2. Create and activate a virtual environment
+
+macOS or Linux:
+
+```bash
+python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-On Windows PowerShell:
+Windows PowerShell:
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 ```
 
-### 2. Install dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Configure environment variables
+### 4. Configure environment variables
 
 Create a `.env` file in the project root:
 
 ```env
 DATABASE_URL=sqlite:///./codeweave.db
-START_PAGE=templates/index.html
+START_PAGE=./templates/index.html
 ```
 
-### 4. Seed the database
+### 5. Seed the database
 
 ```bash
 python seed.py
 ```
 
-> Note: the seed script resets the local database before inserting seed data.
+> The seed script resets the local database before inserting the initial sample data.
 
-### 5. Run the development server
+### 6. Run the development server
 
 ```bash
 uvicorn main:app --reload
 ```
 
-Then open:
+Open the application at:
 
 ```text
 http://127.0.0.1:8000
 ```
 
-API documentation is available at:
+FastAPI's interactive API documentation is available at:
 
 ```text
 http://127.0.0.1:8000/docs
@@ -163,88 +196,91 @@ http://127.0.0.1:8000/docs
 
 ## Roadmap
 
-### Phase 1: Core Concept App
+### Phase 1: Core Concept Application
 
-- [x] Create backend project structure
-- [x] Create database models
+- [x] Create the backend project structure
+- [x] Create the relational database models
 - [x] Add concept CRUD routes
 - [x] Add example, slot, and option routes
-- [x] Build concept list UI
-- [x] Build concept create/edit form
+- [x] Build the concept-list interface
+- [x] Build the concept create/edit form
 - [x] Render concept examples
 - [x] Parse slots from example text
 - [x] Allow users to select slot options in rendered examples
 
-### Phase 2: Complete Editing Workflow
+### Phase 2: Complete the Editing Workflow
 
-- [ ] Add UI for creating examples inside a concept
-- [ ] Add UI for editing example title and code text
-- [ ] Add UI for deleting examples
-- [ ] Add UI for creating slots from example text
-- [ ] Add UI for editing slot labels and slot types
-- [ ] Add UI for adding, editing, deleting, and ordering slot options
-- [ ] Show clear validation when example placeholders do not match defined slots
+- [ ] Add a complete UI for creating examples within a concept
+- [ ] Add controls for editing example titles and code text
+- [ ] Add controls for deleting examples
+- [ ] Add a workflow for creating slots from selected example text
+- [ ] Add controls for editing slot labels and slot types
+- [ ] Add controls for creating, editing, deleting, and ordering slot options
+- [ ] Validate that example placeholders match their defined slots
 - [ ] Improve error handling and form feedback
-- [ ] Add confirmation before deleting user-created content
+- [ ] Add confirmation before deleting content
 
-### Phase 3: Snippet Builder Features
+### Phase 3: Snippet-Builder Features
 
-- [ ] Add live generated-code preview
-- [ ] Add copy-to-clipboard for the current snippet
+- [ ] Add a live generated-code preview
+- [ ] Add copy-to-clipboard functionality
 - [ ] Preserve selected slot values while viewing an example
-- [ ] Link repeated slots so changing one updates every matching occurrence
-- [ ] Allow authors to define whether repeated slot labels should be linked or independent
-- [ ] Add basic slot metadata such as variable name, string value, number value, selector, callback, or expression
+- [ ] Link repeated slots so changing one updates matching occurrences
+- [ ] Allow authors to define whether repeated slot labels are linked or independent
+- [ ] Add basic slot metadata such as variable, string, number, selector, callback, or expression
 
-### Phase 4: Validation and Smarter Slots
+### Phase 4: Validation and Testing
 
-- [ ] Add rule definitions for compatible slot combinations
-- [ ] Add warnings for questionable combinations instead of blocking users immediately
-- [ ] Support language-specific validation rules
-- [ ] Support library/framework-specific slot suggestions
-- [ ] Add optional required imports or setup notes for snippets
-- [ ] Add tests for slot parsing and generated output
+- [ ] Add rules for compatible slot combinations
+- [ ] Warn about questionable combinations without unnecessarily blocking users
+- [ ] Support language-specific validation
+- [ ] Support library- and framework-specific suggestions
+- [ ] Add optional required imports and setup notes
+- [ ] Add automated tests for APIs, slot parsing, nested updates, and generated output
 
 ### Phase 5: Organization and Discovery
 
-- [ ] Add languages as first-class organization fields
-- [ ] Add library/framework categories under each language
+- [ ] Add languages as first-class organizational fields
+- [ ] Add library and framework categories under each language
 - [ ] Add tags for concepts and snippets
 - [ ] Add server-side search and filtering
-- [ ] Add better sorting options
-- [ ] Add saved filters or favorites
-- [ ] Add import/export for snippet packs
+- [ ] Add additional sorting options
+- [ ] Add favorites or saved filters
+- [ ] Add import and export for snippet packs
 
-### Phase 6: Scaling and Sharing
+### Phase 6: Authentication, Sharing, and Deployment
 
-- [ ] Add pagination, infinite scroll, or load-more behavior after the content library grows
-- [ ] Add authentication if the app becomes multi-user
-- [ ] Add ownership/permissions for user-created snippets
-- [ ] Add public/private snippet visibility
+- [ ] Add user registration and authentication after the core workflow is stable
+- [ ] Add ownership and permissions for user-created content
+- [ ] Add public and private snippet visibility
+- [ ] Add pagination or incremental loading as the content library grows
+- [ ] Configure a persistent production database
 - [ ] Add deployment configuration
-- [ ] Add CI checks for formatting, tests, and migrations
+- [ ] Add continuous-integration checks for formatting, tests, and migrations
 
 ## Design Notes
 
 ### Why slots?
 
-Many code examples have parts that change from project to project: variable names, selectors, endpoint URLs, event names, callbacks, messages, and configuration values. CodeWeave treats those changing pieces as structured slots so examples become reusable templates instead of static text.
+Many code examples contain pieces that change from one project to another: variable names, selectors, endpoint URLs, event names, callbacks, messages, and configuration values. CodeWeave treats those changing pieces as structured slots, turning static examples into reusable templates.
 
-### Why build with vanilla JavaScript first?
+### Why use vanilla JavaScript first?
 
-The frontend intentionally uses browser-native JavaScript modules instead of a framework. This keeps the early project focused on fundamentals: DOM rendering, event handling, fetch requests, state management, and API design.
+The frontend intentionally uses browser-native JavaScript modules rather than a framework. This keeps the early project focused on core skills such as DOM rendering, event handling, Fetch API requests, client-side state management, and backend integration.
 
-### Why focus on editing before scaling?
+A framework can be considered later if the application's complexity grows enough to justify it.
 
-The app is still in the early product stage. Before adding advanced scaling features, the priority is to make the core workflow complete:
+### Why finish editing before authentication and deployment?
+
+The current priority is to complete the application's central workflow:
 
 1. Create a concept.
 2. Add examples.
-3. Define slots in those examples.
+3. Define slots within those examples.
 4. Add valid options for each slot.
 5. Preview and copy the generated snippet.
 
-Once that loop feels smooth, features like infinite scroll, authentication, larger search indexes, and advanced validation will be easier to design correctly.
+Once this workflow is reliable and intuitive, authentication, ownership, deployment, and scaling can be added around a stable product foundation rather than an incomplete one.
 
 ## Portfolio Focus
 
@@ -253,9 +289,10 @@ This project demonstrates:
 - Full-stack application planning
 - Relational data modeling
 - REST-style API design
-- Request and response schema design
+- Nested create and update operations
+- Pydantic request and response schema design
 - Frontend state and DOM management without a framework
-- Incremental feature development
-- Database seeding and migrations
-- Product thinking around learners, snippet reuse, validation, and future scalability
-
+- Integration between browser JavaScript and FastAPI endpoints
+- Database seeding and schema migrations
+- Incremental feature development and debugging
+- Product thinking around learning, snippet reuse, validation, and future scalability
