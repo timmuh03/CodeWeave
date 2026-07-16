@@ -1,4 +1,4 @@
-import Examples from "./Examples"
+import ExampleTitles from "./ExampleTitles"
 
 export default function ConceptList({ 
   conceptsLight, conceptsFull, openedConcepts, 
@@ -32,7 +32,7 @@ export default function ConceptList({
                   </div>
                 )}
                 {hasExamples && (
-                  <Examples
+                  <ExampleTitles
                     examples={fullConcept.examples}
                     exampleConceptId={fullConcept.id}
                     openedExampleMenuConceptIds={openedExampleMenuConceptIds}
