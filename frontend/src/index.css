@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  
 }
 
 body {
@@ -11,10 +12,14 @@ body {
   background-color: #333;
 }
 
+h1 {
+  padding: .5rem;
+}
+
 ul {
   list-style: none;
   border-top: 1px solid #f4f4f4;
-  border-bottom: 1px solid #f4f4f4;
+  /* border-bottom: 1px solid #f4f4f4; */
 }
 
 ul li {
@@ -22,6 +27,49 @@ ul li {
   border-bottom: 1px solid #505050;
 }
 
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: pre;
+  padding: .75rem;
+  background-color: #101010;
+}
+
+.bold {
+  font-weight: bold
+}
+
 .clickable {
   cursor: pointer;
+  border-left: 3px solid #f4f4f480;
+  padding-left: .5rem;
+}
+
+.concept-details {
+  margin: 0 1rem;
+}
+
+.concept-language {
+  margin: 1rem 0
+}
+
+.example {
+  background-color: #606060;
+  border-radius: .5rem;
+  padding: .5rem;
+}
+
+.example-slot {
+  border: none;
+  padding: 0;
+  color: #f05055;
+}
+
+.example-title {
+  margin-bottom: .5rem;
+}
+
+.expansion-arrow {
+  opacity: 0.5;
 }

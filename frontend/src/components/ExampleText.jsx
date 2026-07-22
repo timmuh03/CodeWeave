@@ -5,6 +5,10 @@ export default function ExampleText({example}){
 
   const parts = exampleText.split(/(##.*?##)/);
 
+  function onSlotClick(slotOptions) {
+    
+  }
+
   return(
     <pre>
       <code className="example-text">

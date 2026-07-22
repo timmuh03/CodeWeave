@@ -9,6 +9,8 @@ export default function App() {
   const [openedConcepts, setOpenedConcepts] = useState([]);
   const [openedExampleMenuConceptIds, setOpenedExampleMenuConceptIds] = useState([]);
   const [activeExampleIds, setActiveExampleIds] = useState({});
+  const [openedSlotMenus, setOpenedSlotMenus] = useState([]);
+  const [activeSlotOptionsIds, setActiveSlotOptionsIds] = useState({});
 
   const conceptQueueRef = useRef([]);
   const isLoadingRef = useRef(false);

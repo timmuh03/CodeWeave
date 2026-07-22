@@ -29,10 +29,11 @@ export default function ExampleTitles({
     setOpenedExampleMenuConceptIds((currentIds) => {
       return currentIds.filter((id) => id !== exampleConceptId);
     });
+
   }
   return (
     <div className="example">
-      <div className="example-title"
+      <div className="example-title clickable"
         onClick={onExampleTitleClick}
       >
         {example.title}
@@ -41,10 +42,14 @@ export default function ExampleTitles({
       {exampleMenuIsOpen &&
         <div>
           <ul className="example-title-list">
-            {examples.map((example) => (
-              <li key={example.id} className="example-title-list-item"
-                onClick={(event) => handleExampleSelect(event, example)}>
-                {example.title}
+            {examples.filter((menuExample) => menuExample.id !== example.id)
+              .map((example) => (
+              <li key={example.id} className="example-title-list-item">
+                <div className="example-title-list-item clickable"
+                  onClick={(event) => handleExampleSelect(event, example)}
+                >
+                  {example.title}
+                </div>
               </li>
             ))}
           </ul>
