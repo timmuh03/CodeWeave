@@ -5,6 +5,8 @@ export default function ConceptList({
   onConceptTermClick, 
   openedExampleMenuConceptIds, setOpenedExampleMenuConceptIds,
   activeExampleIds, setActiveExampleIds,
+  openedSlotMenuIds, setOpenedSlotMenuIds,
+  activeSlotOptions, setActiveSlotOptions
 }) {
   return (
     <section className="concept-list-section">
@@ -39,6 +41,10 @@ export default function ConceptList({
                     setOpenedExampleMenuConceptIds={setOpenedExampleMenuConceptIds}
                     activeExampleIds={activeExampleIds}
                     setActiveExampleIds={setActiveExampleIds}
+                    activeSlotOptions={activeSlotOptions}
+                    setActiveSlotOptions={setActiveSlotOptions}
+                    openedSlotMenuIds={openedSlotMenuIds}
+                    setOpenedSlotMenuIds={setOpenedSlotMenuIds}
                   />
                 )}
               </div>

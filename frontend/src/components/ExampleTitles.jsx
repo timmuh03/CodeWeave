@@ -4,6 +4,8 @@ export default function ExampleTitles({
   examples, exampleConceptId, 
   openedExampleMenuConceptIds, setOpenedExampleMenuConceptIds, 
   activeExampleIds, setActiveExampleIds,
+  activeSlotOptions, setActiveSlotOptions,
+  openedSlotMenuIds, setOpenedSlotMenuIds
 }) {
   const example = activeExampleIds[exampleConceptId] || examples[0];
 
@@ -58,6 +60,10 @@ export default function ExampleTitles({
       
       <ExampleText 
         example={example}
+        activeSlotOptions={activeSlotOptions}
+        setActiveSlotOptions={setActiveSlotOptions}
+        openedSlotMenuIds={openedSlotMenuIds}
+        setOpenedSlotMenuIds={setOpenedSlotMenuIds}
       />
     </div>
   );

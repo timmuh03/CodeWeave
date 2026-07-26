@@ -29,8 +29,7 @@ ul li {
 
 pre {
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: auto;
   white-space: pre;
   padding: .75rem;
   background-color: #101010;
@@ -66,6 +65,17 @@ pre {
   color: #f05055;
 }
 
+.example-text-container {
+  position: relative;
+}
+
+.example-text-scroller {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 0;
+  
+}
+
 .example-title {
   margin-bottom: .5rem;
 }
@@ -73,3 +83,15 @@ pre {
 .expansion-arrow {
   opacity: 0.5;
 }
+
+.slot-menu-overlay {
+  position: absolute;
+  background-color: #101010;
+}
+
+.slot-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+

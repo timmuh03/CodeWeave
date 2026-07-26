@@ -9,8 +9,8 @@ export default function App() {
   const [openedConcepts, setOpenedConcepts] = useState([]);
   const [openedExampleMenuConceptIds, setOpenedExampleMenuConceptIds] = useState([]);
   const [activeExampleIds, setActiveExampleIds] = useState({});
-  const [openedSlotMenus, setOpenedSlotMenus] = useState([]);
-  const [activeSlotOptionsIds, setActiveSlotOptionsIds] = useState({});
+  const [openedSlotMenuIds, setOpenedSlotMenuIds] = useState([]);
+  const [activeSlotOptions, setActiveSlotOptions] = useState({});
 
   const conceptQueueRef = useRef([]);
   const isLoadingRef = useRef(false);
@@ -107,6 +107,10 @@ export default function App() {
         setOpenedExampleMenuConceptIds={setOpenedExampleMenuConceptIds}
         activeExampleIds={activeExampleIds}
         setActiveExampleIds={setActiveExampleIds}
+        openedSlotMenuIds={openedSlotMenuIds}
+        setOpenedSlotMenuIds={setOpenedSlotMenuIds}
+        activeSlotOptions={activeSlotOptions}
+        setActiveSlotOptions={setActiveSlotOptions}
       />
     </main>
   )
