@@ -25,6 +25,18 @@ export default function App() {
     startQueue();
   }, []);
 
+  useEffect(() => {
+    function closeSlotMenus() {
+      setOpenedSlotMenuIds([]);
+    }
+
+    document.addEventListener("click", closeSlotMenus);
+
+    return () => {
+      document.removeEventListener("click", closeSlotMenus);
+    };
+  }, []);
+
   async function loadConceptList() {
     const list = await fetchConcepts();
     setConceptsLight(list);

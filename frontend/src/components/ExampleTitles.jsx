@@ -32,6 +32,7 @@ export default function ExampleTitles({
       return currentIds.filter((id) => id !== exampleConceptId);
     });
 
+    setOpenedSlotMenuIds([]);
   }
   return (
     <div className="example">

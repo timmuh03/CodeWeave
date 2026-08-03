@@ -25,18 +25,32 @@ export default function ExampleText({
     
     setOpenedSlotMenuIds((currentIds) => {
       if (currentIds.includes(slot.id)) {
-        return currentIds.filter((id) => id !== slot.id);
+        return [];
       }
-      return [...currentIds, slot.id];
+      return [slot.id];
     });
   }
 
+  function onCodeScroll() {
+    setOpenedSlotMenuIds([]);
+  }
+
+  function onOptionClick(event, openSlotId, option) {
+    event.stopPropagation();
+
+    setActiveSlotOptions((currentOptions) => ({
+      ...currentOptions,
+      [openSlotId]: option,
+    }));    
+
+    setOpenedSlotMenuIds([]);
+  }
+  
   const openSlot = slots.find((slot) => openedSlotMenuIds.includes(slot.id));
-  // const slotMenuIsOpen = Boolean(openSlot);
     
   return(
     <div ref={containerRef} className="example-text-container">
-      <pre className="example-text-scroller">
+      <pre onScroll={onCodeScroll} className="example-text-scroller">
         <code className="example-text">
           {parts.map((part, index) => {
             const isSlot = part.startsWith("##") && part.endsWith("##");
@@ -47,7 +61,8 @@ export default function ExampleText({
       
             const slotLabel = part.slice(2, -2);
             const slot = slots.find((slot) => slot.slot_label === slotLabel);
-            const optionText = slot?.slot_options?.[0]?.option_text || slotLabel;
+            const activeOption = activeSlotOptions[slot.id] || slot.slot_options?.[0];
+            const optionText = activeOption?.option_text || slotLabel;        
         
             return (
               <span key={`${slotLabel}-${index}`} className="slot-wrapper"
@@ -66,17 +81,25 @@ export default function ExampleText({
           style={{
             top: menuPosition.top,
             left: menuPosition.left,
-          }}  
+          }}
+          onClick={(event) => event.stopPropagation()}
         >
+          <div className="slot-menu-label">
+            {openSlot.slot_label}
+          </div>
           <ul className="slot-menu-list">
-            {openSlot.slot_options.map((option) => 
+            {openSlot.slot_options.map((option) => (
               <li key={option.id} className="slot-menu-list-item">
-                <p className="clickable">{option.option_text}</p>
+                <p onClick={(event) =>
+                onOptionClick(event, openSlot.id, option)} className="clickable"
+                >
+                  {option.option_text}
+                </p>
               </li>
-            )}
+            ))}
           </ul>
         </div>
-        )}
+      )}
     </div>
   )
 }
