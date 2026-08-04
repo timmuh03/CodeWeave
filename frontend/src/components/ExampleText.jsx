@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 
 export default function ExampleText({
   example, 
@@ -7,6 +7,7 @@ export default function ExampleText({
 }){
   const containerRef = useRef(null);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const menuRef = useRef(null);
 
   const exampleText = example.text || "No example text available";
   const slots = example?.slots || [];
@@ -47,6 +48,34 @@ export default function ExampleText({
   }
   
   const openSlot = slots.find((slot) => openedSlotMenuIds.includes(slot.id));
+
+  useLayoutEffect(() => {
+    if (!openSlot || !menuRef.current) {
+      return;
+    }
+
+    const menuRect = menuRef.current.getBoundingClientRect();
+    const viewportPadding = 10;
+    const minimumViewportLeft = viewportPadding
+    const maximumViewportLeft = Math.max(
+      viewportPadding,
+      window.innerWidth - menuRect.width - viewportPadding
+    );
+
+    const correctedViewportLeft = Math.min(
+      Math.max(menuRect.left, minimumViewportLeft),
+      maximumViewportLeft
+    );
+
+    const horizontalAdjustment = correctedViewportLeft - menuRect.left;
+
+    if (horizontalAdjustment !== 0) {
+      setMenuPosition((currentPosition) => ({
+        ...currentPosition,
+        left: currentPosition.left + horizontalAdjustment
+      }));
+    }
+  }, [openSlot?.id]);
     
   return(
     <div ref={containerRef} className="example-text-container">
@@ -77,7 +106,8 @@ export default function ExampleText({
         </code>
       </pre>
       {openSlot && (
-        <div className="slot-menu-overlay"
+        <div ref={menuRef}
+          className="slot-menu-overlay"
           style={{
             top: menuPosition.top,
             left: menuPosition.left,
