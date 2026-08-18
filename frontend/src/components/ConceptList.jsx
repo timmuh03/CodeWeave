@@ -48,12 +48,11 @@ export default function ConceptList({
                     setOpenedSlotMenuIds={setOpenedSlotMenuIds}
                   />
                 )}
-                <ConceptActions 
+                {/* <ConceptActions 
                   conceptId={concept.id}
-                />
+                /> */}
               </div>
             )}
-
           </li>
           );
         })}
