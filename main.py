@@ -30,14 +30,18 @@ logging.basicConfig(level=logging.INFO)
 
 Base.metadata.create_all(bind=engine)
 
-SHOW_DOCS = False
-SHOW_DOCS = True
+FRONTEND_DIST = "frontend/dist"
 
-@app.get("/", include_in_schema=False)
-def read_root():
-  if SHOW_DOCS:
+if os.path.isdir(FRONTEND_DIST):
+  app.mount(
+    "/",
+    StaticFiles(
+      directory=FRONTEND_DIST,
+      html=True
+    ),
+    name="frontend"
+  )
+else:
+  @app.get("/", include_in_schema=False)
+  def read_root():
     return RedirectResponse(url="/docs")
-
-  site = os.environ['START_PAGE']
-  # site = os.environ["CONCEPT_PAGE"]
-  return FileResponse(site)
