@@ -9,6 +9,10 @@ channel = "stable-25_05"
 packages = ["libxcrypt", "sqlite", "vim-full"]
 
 [[ports]]
+localPort = 5173
+externalPort = 5173
+
+[[ports]]
 localPort = 8000
 externalPort = 80
 

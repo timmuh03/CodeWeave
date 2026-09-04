@@ -124,6 +124,12 @@ export default function App() {
         activeSlotOptions={activeSlotOptions}
         setActiveSlotOptions={setActiveSlotOptions}
       />
+      <button 
+        id="create-concept"
+        onClick={() => onCreateConceptClick()}
+      >
+        +
+      </button>
     </main>
   )
 }
