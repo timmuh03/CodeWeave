@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { fetchConcepts, fetchConcept } from "./api/concepts";
 import ConceptList from "./components/ConceptList";
+import ConceptCreate from "./components/ConceptCreate"
 import "./App.css";
 
 export default function App() {
@@ -11,6 +12,8 @@ export default function App() {
   const [activeExampleIds, setActiveExampleIds] = useState({});
   const [openedSlotMenuIds, setOpenedSlotMenuIds] = useState([]);
   const [activeSlotOptions, setActiveSlotOptions] = useState({});
+  const [createFormOpen, setCreateFormOpen] = useState(false);
+
 
   const conceptQueueRef = useRef([]);
   const isLoadingRef = useRef(false);
@@ -124,12 +127,13 @@ export default function App() {
         activeSlotOptions={activeSlotOptions}
         setActiveSlotOptions={setActiveSlotOptions}
       />
-      <button 
-        id="create-concept"
-        onClick={() => onCreateConceptClick()}
+      <button
+        className = "concept-create-btn"
+        onClick={ ()=> setCreateFormOpen(!createFormOpen)}
       >
-        +
       </button>
+      {createFormOpen && (<ConceptCreate
+      />)}
     </main>
-  )
+  );
 }

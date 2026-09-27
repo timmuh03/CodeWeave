@@ -55,12 +55,47 @@ pre {
   padding-left: .5rem;
 }
 
+.code-input {
+  width: 100%;
+  min-height: 5rem;
+  box-sizing: border-box;
+  padding: .5rem;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  border: 1px solid #444;
+  border-radius: 8px;
+  resize: vertical;
+  tab-size: 4;
+}
+
+.code-input:focus {
+  outline: 2px solid #569cd6;
+}
+
+.concept-create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+}
+
 .concept-details {
   margin: 0 1rem;
 }
 
-.concept-language {
-  margin: 1rem 0
+.concept-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.concept-field input,
+.concept-field textarea {
+  font-size: 16px;
 }
 
 .example {
