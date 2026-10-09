@@ -57,6 +57,7 @@ pre {
 
 .code-input {
   width: 100%;
+  /* max-width: 100%; */
   min-height: 5rem;
   box-sizing: border-box;
   padding: .5rem;
@@ -90,12 +91,13 @@ pre {
 .concept-field {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 
 .concept-field input,
 .concept-field textarea {
   font-size: 16px;
+  width: 100%;
+  resize: vertical;
 }
 
 .example {
