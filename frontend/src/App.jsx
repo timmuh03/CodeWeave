@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { fetchConcepts, fetchConcept } from "./api/concepts";
 import ConceptList from "./components/ConceptList";
-import ConceptCreate from "./components/ConceptCreate"
+import ConceptCreateForm from "./components/ConceptCreateForm"
 import "./App.css";
 
 export default function App() {
@@ -131,9 +131,11 @@ export default function App() {
         className = "concept-create-btn"
         onClick={ ()=> setCreateFormOpen(!createFormOpen)}
       >
+        +
       </button>
-      {createFormOpen && (<ConceptCreate
-      />)}
+      <ConceptCreateForm
+        createFormOpen={createFormOpen}
+      />
     </main>
   );
 }

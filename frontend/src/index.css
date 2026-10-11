@@ -76,12 +76,37 @@ pre {
   outline: 2px solid #569cd6;
 }
 
+.concept-create-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+}
+
 .concept-create-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
   padding: 1rem;
+}
+
+.concept-create-form-shell {
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  top: 100vh;
+  background-color: #333;
+}
+
+.concept-create-form-shell.open {
+  top: 0;
+}
+
+.concept-create-snippet-shell {
+  padding: .5rem;
+  background-color: #444;
 }
 
 .concept-details {
