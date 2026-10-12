@@ -91,6 +91,13 @@ pre {
   padding: 1rem;
 }
 
+.concept-create-form-btns {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1rem;
+  background-color: #444;
+}
+
 .concept-create-form-shell {
   position: fixed;
   left: 0;
@@ -104,9 +111,25 @@ pre {
   top: 0;
 }
 
+.concept-create-snippet-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
 .concept-create-snippet-shell {
   padding: .5rem;
   background-color: #444;
+}
+
+.concept-create-snippet-carousel-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.concept-create-spacer {
+  border-bottom: 1px solid #fff;
+  height: 50px;
 }
 
 .concept-details {

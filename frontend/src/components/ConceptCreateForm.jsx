@@ -27,9 +27,12 @@ export default function ConceptCreateForm({ createFormOpen }) {
             type="text"
           />
         </label>
+        <span className="concept-create-snippet-carousel-menu">
+          <a>←</a>K of N<a>→</a>
+        </span>
         <div className="concept-create-snippet-shell">
-          <label className="concept-field">
-            Snippet Title
+          <label className="concept-field">            
+            <p>Snippet Title</p>
             <input
               className="concept-language"
               type="text"
@@ -41,14 +44,23 @@ export default function ConceptCreateForm({ createFormOpen }) {
               className="code-input"
             />
           </label>
+          <div className="concept-create-snippet-btns">
+            <button>
+              Delete Snippet
+            </button>
+            <button>
+              New Snippet
+            </button>
+          </div>
         </div>
       </div>
+      <div className="concept-create-spacer"></div>
       <div className="concept-create-form-btns">
-        <button className="concept-create-form-save">
-          Save
-        </button>
         <button className="concept-create-form-cancel">
           Cancel
+        </button>
+        <button className="concept-create-form-save">
+          Save
         </button>
       </div>
     </div>
