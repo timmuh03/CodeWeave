@@ -135,6 +135,11 @@ export default function App() {
       </button>
       <ConceptCreateForm
         createFormOpen={createFormOpen}
+        setCreateFormOpen={setCreateFormOpen}
+        conceptsLight={conceptsLight}
+        setConceptsLight={setConceptsLight}
+        conceptsFull={conceptsFull}
+        setConceptsFull={setConceptsFull}
       />
     </main>
   );

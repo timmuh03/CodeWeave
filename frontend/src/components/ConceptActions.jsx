@@ -4,8 +4,10 @@ import { deleteConcept } from "../api/concepts"
 export default function ConceptActions({ conceptId }) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   
-  function deletePress() {
-    deleteConcept(conceptId);
+  async function deletePress() {
+    await deleteConcept(conceptId);
+    
+    
     setDeleteOpen(false);
   }
   return (
