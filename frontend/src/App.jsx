@@ -108,6 +108,20 @@ export default function App() {
     ];
   }
 
+  function onConceptDeleted(conceptId) {
+    setConceptsLight((concepts) =>
+      concepts.filter((concept) =>
+        conceptId !== concept.id
+      )
+    );
+
+    setConceptsFull((concepts) => {
+      const updatedConcepts = { ...concepts };
+      delete updatedConcepts[conceptId];
+      return updatedConcepts;
+    });
+  }
+
   return (
     <main className="app">
       <header className="app-header">
@@ -126,6 +140,7 @@ export default function App() {
         setOpenedSlotMenuIds={setOpenedSlotMenuIds}
         activeSlotOptions={activeSlotOptions}
         setActiveSlotOptions={setActiveSlotOptions}
+        onConceptDeleted={onConceptDeleted}
       />
       <button
         className = "concept-create-btn"

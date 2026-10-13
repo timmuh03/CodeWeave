@@ -61,7 +61,7 @@ export default function ConceptCreateForm({
   function updateState(savedConcept) {
     setConceptsFull((concepts) => ({
       ...concepts,
-      [savedConcept.id]: saveConcept,
+      [savedConcept.id]: savedConcept,
     }));
     setConceptsLight((concepts) => [
       ...concepts,

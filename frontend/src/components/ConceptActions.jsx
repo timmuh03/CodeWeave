@@ -1,14 +1,20 @@
 import { useState } from "react"
 import { deleteConcept } from "../api/concepts"
 
-export default function ConceptActions({ conceptId }) {
+export default function ConceptActions({ 
+  conceptId,
+  onConceptDeleted,
+}) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   
   async function deletePress() {
-    await deleteConcept(conceptId);
-    
-    
-    setDeleteOpen(false);
+    try {
+      await deleteConcept(conceptId);
+      onConceptDeleted(conceptId);
+      setDeleteOpen(false);
+    } catch (error) {
+      console.error("Failed to delete concept", error);
+    }
   }
   return (
     <div>

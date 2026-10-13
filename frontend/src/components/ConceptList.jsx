@@ -7,7 +7,8 @@ export default function ConceptList({
   openedExampleMenuConceptIds, setOpenedExampleMenuConceptIds,
   activeExampleIds, setActiveExampleIds,
   openedSlotMenuIds, setOpenedSlotMenuIds,
-  activeSlotOptions, setActiveSlotOptions
+  activeSlotOptions, setActiveSlotOptions,
+  onConceptDeleted,
 }) {
   return (
     <section className="concept-list-section">
@@ -50,6 +51,7 @@ export default function ConceptList({
                 )}
                 {<ConceptActions 
                   conceptId={concept.id}
+                   onConceptDeleted={onConceptDeleted}
                 />}
               </div>
             )}
