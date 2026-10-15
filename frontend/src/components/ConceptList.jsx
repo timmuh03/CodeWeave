@@ -3,6 +3,7 @@ import ConceptActions from "./ConceptActions"
 
 export default function ConceptList({ 
   conceptsLight, conceptsFull, openedConcepts, 
+  setConceptsLight, setConceptsFull, 
   onConceptTermClick, 
   openedExampleMenuConceptIds, setOpenedExampleMenuConceptIds,
   activeExampleIds, setActiveExampleIds,
@@ -49,10 +50,15 @@ export default function ConceptList({
                     setOpenedSlotMenuIds={setOpenedSlotMenuIds}
                   />
                 )}
-                {<ConceptActions 
+                {
+                  <ConceptActions 
                   conceptId={concept.id}
-                   onConceptDeleted={onConceptDeleted}
-                />}
+                  fullConcept={fullConcept}
+                  onConceptDeleted={onConceptDeleted}
+                  setConceptsLight={setConceptsLight}
+                  setConceptsFull={setConceptsFull}
+                  />
+                }
               </div>
             )}
           </li>

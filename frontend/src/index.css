@@ -45,6 +45,15 @@ pre {
   background-color: #101010;
 }
 
+.app-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.app-header button {
+  margin: .5rem;
+}
+
 .bold {
   font-weight: bold
 }

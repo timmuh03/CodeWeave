@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { fetchConcepts, fetchConcept } from "./api/concepts";
 import ConceptList from "./components/ConceptList";
-import ConceptCreateForm from "./components/ConceptCreateForm"
+import ConceptEditor from "./components/ConceptEditor"
 import "./App.css";
 
 export default function App() {
@@ -12,7 +12,7 @@ export default function App() {
   const [activeExampleIds, setActiveExampleIds] = useState({});
   const [openedSlotMenuIds, setOpenedSlotMenuIds] = useState([]);
   const [activeSlotOptions, setActiveSlotOptions] = useState({});
-  const [createFormOpen, setCreateFormOpen] = useState(false);
+  const [conceptEditorOpen, setConceptEditorOpen] = useState(false);
 
 
   const conceptQueueRef = useRef([]);
@@ -126,6 +126,9 @@ export default function App() {
     <main className="app">
       <header className="app-header">
         <h1>Concepts</h1>
+        <button>
+          ⇅
+        </button>
       </header>
       <ConceptList
         conceptsLight={conceptsLight}
@@ -141,19 +144,19 @@ export default function App() {
         activeSlotOptions={activeSlotOptions}
         setActiveSlotOptions={setActiveSlotOptions}
         onConceptDeleted={onConceptDeleted}
+        setConceptsLight={setConceptsLight}
+        setConceptsFull={setConceptsFull}
       />
       <button
         className = "concept-create-btn"
-        onClick={ ()=> setCreateFormOpen(!createFormOpen)}
+        onClick={ ()=> setConceptEditorOpen(!conceptEditorOpen)}
       >
         +
       </button>
-      <ConceptCreateForm
-        createFormOpen={createFormOpen}
-        setCreateFormOpen={setCreateFormOpen}
-        conceptsLight={conceptsLight}
+      <ConceptEditor
+        conceptEditorOpen={conceptEditorOpen}
+        setConceptEditorOpen={setConceptEditorOpen}
         setConceptsLight={setConceptsLight}
-        conceptsFull={conceptsFull}
         setConceptsFull={setConceptsFull}
       />
     </main>

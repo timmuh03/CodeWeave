@@ -1,61 +1,69 @@
-import { createFullConcept } from "../api/concepts"
+import { createFullConcept, editFullConcept } from "../api/concepts";
 
 import { useState } from "react";
 
-export default function ConceptCreateForm({
-  createFormOpen, setCreateFormOpen,
-  conceptsFull, setConceptsFull,
-  conceptsLight, setConceptsLight,
+export default function ConceptEditor({
+  conceptToEdit = null,
+  createFormOpen,
+  setCreateFormOpen,
+  conceptsFull,
+  setConceptsFull,
+  conceptsLight,
+  setConceptsLight,
 }) {
-  const [newConceptName, setNewConceptName] = useState("");
-  const [newConceptDescription, setNewConceptDescription] = useState("");
-  const [newConceptLanguage, setNewConceptLanguage] = useState("");
+  const [conceptName, setConceptName] = useState("");
+  const [conceptDescription, setConceptDescription] = useState("");
+  const [conceptLanguage, setConceptLanguage] = useState("");
   const [currentSnippetIndex, setCurrentSnippetIndex] = useState(0);
-  const [newConceptSnippets, setNewConceptSnippets] = useState([
+  const [conceptSnippets, setConceptSnippets] = useState([
     {
       snippetTitle: "",
       snippet: "",
     },
   ]);
 
+  const isEditing = !!conceptToEdit
+
   async function saveConcept() {
     console.log("conceptsLight: ", conceptsLight);
     console.log("concetpsFull: ", conceptsFull);
-    
-    const newConcept = buildConcept();
+
+    const conceptData = buildConcept();
     try {
-    const savedConcept = await conceptToAPI(newConcept);
-    updateState(savedConcept);
-      
-    setCreateFormOpen(false);
-    resetForm();
-    } catch(error) {
+      const savedConcept = await conceptToAPI(conceptData);
+      updateState(savedConcept);
+
+      setCreateFormOpen(false);
+      resetForm();
+    } catch (error) {
       console.error("Failed to save concept.", error);
     }
-    
-    
-    console.log("newconcpet", newConcept);
 
+    console.log("newconcpet", newConcept);
   }
 
   function buildConcept() {
-    const examples = newConceptSnippets.map((snippet) => ({
+    const examples = conceptSnippets.map((snippet) => ({
       title: snippet.snippetTitle,
-      text: snippet.snippet
+      text: snippet.snippet,
     }));
     const newConcept = {
-      term: newConceptName,
-      language: newConceptLanguage,
-      description: newConceptDescription,
+      term: conceptName,
+      language: conceptLanguage,
+      description: conceptDescription,
       examples,
     };
 
     return newConcept;
   }
 
-  async function conceptToAPI(newConcept) {
-    const savedConcept = await createFullConcept(newConcept);
-    return savedConcept;
+  async function conceptToAPI(concept) {
+      if (isEditing) {
+        return await editFullConcept(concept);
+      }
+      else {
+        return await createFullConcept(conceptToEdit.id, concept);
+      }
   }
 
   function updateState(savedConcept) {
@@ -63,67 +71,60 @@ export default function ConceptCreateForm({
       ...concepts,
       [savedConcept.id]: savedConcept,
     }));
-    setConceptsLight((concepts) => [
-      ...concepts,
-      {
-        id: savedConcept.id,
-        term: savedConcept.term,
-      }
-    ]);
+    
+    setConceptsLight((concepts) => 
+      isEditing ?
+      
   }
 
   function makeNewSnippet() {
-    setNewConceptSnippets((currentSnippets) => [
+    setConceptSnippets((currentSnippets) => [
       ...currentSnippets,
       {
         snippetTitle: "",
         snippet: "",
-      }
+      },
     ]);
-    setCurrentSnippetIndex(() => newConceptSnippets.length);
+    setCurrentSnippetIndex(() => conceptSnippets.length);
   }
 
   function prevSnippet() {
     setCurrentSnippetIndex((currentIndex) =>
-      currentIndex === 0 ?
-      newConceptSnippets.length - 1
-      : currentIndex - 1
+      currentIndex === 0 ? conceptSnippets.length - 1 : currentIndex - 1,
     );
   }
 
   function nextSnippet() {
-    setCurrentSnippetIndex((currentIndex) =>
-      (currentIndex +1) % newConceptSnippets.length
+    setCurrentSnippetIndex(
+      (currentIndex) => (currentIndex + 1) % conceptSnippets.length,
     );
   }
 
   function deleteSnippet() {
-    if (newConceptSnippets.length === 1) {
-      setNewConceptSnippets([
+    if (conceptSnippets.length === 1) {
+      setConceptSnippets([
         {
           snippetTitle: "",
           snippet: "",
-        }
-      ])
+        },
+      ]);
       return;
     }
-    
-    setNewConceptSnippets((currentSnippets) => 
-      currentSnippets.filter((snippet, index) =>
-        index != currentSnippetIndex
-      )
+
+    setConceptSnippets((currentSnippets) =>
+      currentSnippets.filter((snippet, index) => index != currentSnippetIndex),
     );
 
     setCurrentSnippetIndex((currentIndex) =>
-      Math.min(currentIndex, newConceptSnippets.length - 2)
+      Math.min(currentIndex, conceptSnippets.length - 2),
     );
   }
 
   function resetForm() {
-    setNewConceptName("");
-    setNewConceptDescription("");
-    setNewConceptLanguage("");
-    setNewConceptSnippets([
+    setConceptName("");
+    setConceptDescription("");
+    setConceptLanguage("");
+    setConceptSnippets([
       {
         snippetTitle: "",
         snippet: "",
@@ -145,15 +146,15 @@ export default function ConceptCreateForm({
           <input
             className="concept-title"
             type="text"
-            value={newConceptName}
-            onChange={(event) => setNewConceptName(event.target.value)}
+            value={conceptName}
+            onChange={(event) => setConceptName(event.target.value)}
           />
         </label>
         <label className="concept-field">
           Description
           <textarea
-            value={newConceptDescription}
-            onChange={(event) => setNewConceptDescription(event.target.value)}
+            value={conceptDescription}
+            onChange={(event) => setConceptDescription(event.target.value)}
           />
         </label>
         <label className="concept-field">
@@ -161,24 +162,16 @@ export default function ConceptCreateForm({
           <input
             className="concept-language"
             type="text"
-            value={newConceptLanguage}
-            onChange={(event) => setNewConceptLanguage(event.target.value)}
+            value={conceptLanguage}
+            onChange={(event) => setConceptLanguage(event.target.value)}
           />
         </label>
         <span className="concept-create-snippet-carousel-menu">
           {/*change to button later */}
-          <a 
-            onClick={ prevSnippet }
-          >
-            ←
-          </a>
-          {currentSnippetIndex + 1} of {newConceptSnippets.length}
+          <a onClick={prevSnippet}>←</a>
+          {currentSnippetIndex + 1} of {conceptSnippets.length}
           {/*change to button later */}
-          <a
-            onClick={ nextSnippet }
-          >
-            →
-          </a>
+          <a onClick={nextSnippet}>→</a>
         </span>
         <div className="concept-create-snippet-shell">
           <label className="concept-field">
@@ -186,12 +179,12 @@ export default function ConceptCreateForm({
             <input
               className="concept-language"
               type="text"
-              value={newConceptSnippets[currentSnippetIndex].snippetTitle}
+              value={conceptSnippets[currentSnippetIndex].snippetTitle}
               onChange={(event) => {
-                setNewConceptSnippets((currentSnippets) =>
+                setConceptSnippets((currentSnippets) =>
                   currentSnippets.map((snippet, index) =>
-                    index === currentSnippetIndex ?
-                      { ...snippet, snippetTitle: event.target.value }
+                    index === currentSnippetIndex
+                      ? { ...snippet, snippetTitle: event.target.value }
                       : snippet,
                   ),
                 );
@@ -202,12 +195,12 @@ export default function ConceptCreateForm({
             Snippet
             <textarea
               className="code-input"
-              value={newConceptSnippets[currentSnippetIndex].snippet}
+              value={conceptSnippets[currentSnippetIndex].snippet}
               onChange={(event) => {
-                setNewConceptSnippets((currentSnippets) =>
+                setConceptSnippets((currentSnippets) =>
                   currentSnippets.map((snippet, index) =>
-                    index === currentSnippetIndex ?
-                      { ...snippet, snippet: event.target.value }
+                    index === currentSnippetIndex
+                      ? { ...snippet, snippet: event.target.value }
                       : snippet,
                   ),
                 );
@@ -215,16 +208,8 @@ export default function ConceptCreateForm({
             />
           </label>
           <div className="concept-create-snippet-btns">
-            <button
-              onClick={ deleteSnippet }
-            >
-              Delete Snippet
-            </button>
-            <button
-              onClick={ ()=> makeNewSnippet() }
-            >
-              New Snippet
-            </button>
+            <button onClick={deleteSnippet}>Delete Snippet</button>
+            <button onClick={() => makeNewSnippet()}>New Snippet</button>
           </div>
         </div>
       </div>
