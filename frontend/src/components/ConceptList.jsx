@@ -9,22 +9,33 @@ export default function ConceptList({
   activeExampleIds, setActiveExampleIds,
   openedSlotMenuIds, setOpenedSlotMenuIds,
   activeSlotOptions, setActiveSlotOptions,
-  onConceptDeleted,
+  onConceptDeleted, sortOrder,
 }) {
+  const sortedConcepts = [...conceptsLight].sort((a,b) =>
+    sortOrder === "az"
+    ? a.term.localeCompare(b.term)
+    : b.term.localeCompare(a.term)
+  );
+  
   return (
     <section className="concept-list-section">
       <ul className="concept-list">
-        {conceptsLight.map((concept) => {
+        {sortedConcepts.map((concept) => {
           const isOpen = openedConcepts.includes(concept.id);
           const fullConcept = conceptsFull[concept.id];
           const hasExamples = fullConcept?.examples?.length > 0;
+
+          console.log(
+            "Empty concepts:",
+            sortedConcepts.filter((concept) => !concept.term?.trim())
+          );
     
           return (
           <li key={concept.id} className="concept-term">
             <div className="concept-term-arrow clickable"
               onClick={() => onConceptTermClick(concept.id)}
             >
-              {concept.term}
+              {concept.term?.trim() || `Untitled Concept`}
             </div>              
             {isOpen && (
               <div className="concept-details">

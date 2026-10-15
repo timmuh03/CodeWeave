@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { fetchConcepts, fetchConcept } from "./api/concepts";
 import ConceptList from "./components/ConceptList";
 import ConceptEditor from "./components/ConceptEditor"
+import Header from "./components/Header"
 import "./App.css";
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
   const [openedSlotMenuIds, setOpenedSlotMenuIds] = useState([]);
   const [activeSlotOptions, setActiveSlotOptions] = useState({});
   const [conceptEditorOpen, setConceptEditorOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState("az");
 
 
   const conceptQueueRef = useRef([]);
@@ -124,12 +126,10 @@ export default function App() {
 
   return (
     <main className="app">
-      <header className="app-header">
-        <h1>Concepts</h1>
-        <button>
-          ⇅
-        </button>
-      </header>
+      <Header
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
       <ConceptList
         conceptsLight={conceptsLight}
         conceptsFull={conceptsFull}
@@ -146,6 +146,7 @@ export default function App() {
         onConceptDeleted={onConceptDeleted}
         setConceptsLight={setConceptsLight}
         setConceptsFull={setConceptsFull}
+        sortOrder={sortOrder}
       />
       <button
         className = "concept-create-btn"
