@@ -4,7 +4,6 @@ from fastapi import (APIRouter, Depends,
   HTTPException, status)
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
-from fastapi.responses import FileResponse
 
 from db import get_db
 from models import Concept, Example, ExampleSlot, SlotOption
@@ -101,16 +100,6 @@ def create_concept_full(
   except Exception:
     db.rollback()
     raise
-
-@router.get("/form", include_in_schema=False,
-  status_code=status.HTTP_200_OK)
-def create_concept_form():
-  return FileResponse("templates/concept_form.html")
-
-@router.get("/{concept_id}/form", include_in_schema=False,
-  status_code=status.HTTP_200_OK)
-def edit_concept_form():
-  return FileResponse("templates/concept_form.html")
 
 @router.get(
   "/",

@@ -3,7 +3,6 @@ import { fetchConcepts, fetchConcept } from "./api/concepts";
 import ConceptList from "./components/ConceptList";
 import ConceptEditor from "./components/ConceptEditor"
 import Header from "./components/Header"
-import "./App.css";
 
 export default function App() {
   const [conceptsLight, setConceptsLight] = useState([]);

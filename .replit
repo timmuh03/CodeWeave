@@ -18,10 +18,6 @@ externalPort = 80
 
 [userenv]
 
-[userenv.shared]
-CONCEPT_PAGE = "./templates/concept_form.html"
-START_PAGE = "./templates/index.html"
-
 [deployment]
 deploymentTarget = "cloudrun"
 build = "python3 seed.py && cd frontend && npm install && npm run build"

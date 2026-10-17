@@ -20,12 +20,6 @@ app.include_router(
 app.include_router(
   routers.slot_option_router)
 
-app.mount(
-  "/static",
-  StaticFiles(directory="static"),
-  name="static"
-)
-
 logging.basicConfig(level=logging.INFO)
 
 Base.metadata.create_all(bind=engine)
