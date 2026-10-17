@@ -23,6 +23,10 @@ class ConceptRead(AppSchema):
   description: str
   language: str | None = None
 
+class ConceptTitle(AppSchema):
+  id: int
+  term: str
+
 class ConceptUpdate(AppSchema):
   term: str | None = None
   description: str | None = None

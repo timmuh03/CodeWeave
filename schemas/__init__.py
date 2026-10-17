@@ -4,6 +4,7 @@ from schemas.concept import (
   ConceptReadDown,
   ConceptUpdate,
   ConceptUpdateFull,
+  ConceptTitle,
 )
 from schemas.example import (
   ExampleCreate,
