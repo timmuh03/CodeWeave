@@ -21,16 +21,6 @@ export default function App() {
   const isLoadingRef = useRef(false);
 
   useEffect(() => {
-    async function startQueue() {
-      const list = await loadConceptList();
-
-      conceptQueueRef.current = list.map((concept) => concept.id);
-      loadConceptListDetails();
-    }
-    startQueue();
-  }, []);
-
-  useEffect(() => {
     function closeSlotMenus() {
       setOpenedSlotMenuIds([]);
     }
@@ -42,49 +32,56 @@ export default function App() {
     };
   }, []);
 
-  async function loadConceptList() {
-    const list = await fetchConcepts();
-    setConceptsLight(list);
+  
 
-    return list;
-  }
+  useEffect(() => {
+    async function loadConceptList() {
+      const list = await fetchConcepts();
+      setConceptsLight(list);
 
-  async function loadConceptListDetails() {
-    if (isLoadingRef.current) {
-      return;
+      return list;
     }
 
-    isLoadingRef.current = true;
-
-    try {
-      while (conceptQueueRef.current.length > 0) {
-        const conceptId = conceptQueueRef.current.shift();
-  
-        if (conceptsFull[conceptId]) {
-          continue;
-        }
-  
-        await loadConceptDetails(conceptId);
+    async function loadConceptListDetails() {
+      if (isLoadingRef.current) {
+        return;
       }
-    } finally {
-      isLoadingRef.current = false;
-    }
-  }
 
-  async function loadConceptDetails(conceptId) {
-    try {
-      const details = await fetchConcept(conceptId);
-  
-      setConceptsFull((currentConcepts) => ({
-        ...currentConcepts,
-        [conceptId]: details,
-      }));
-      return details;
-    } catch (error) {
-      console.error(`Failed to load concept details for ${conceptId}:`, error);
-      return null;
+      isLoadingRef.current = true;
+
+      try {
+        while (conceptQueueRef.current.length > 0) {
+          const conceptId = conceptQueueRef.current.shift();
+
+          await loadConceptDetails(conceptId);
+        }
+      } finally {
+        isLoadingRef.current = false;
+      }
     }
-  }
+
+    async function loadConceptDetails(conceptId) {
+      try {
+        const details = await fetchConcept(conceptId);
+
+        setConceptsFull((currentConcepts) => ({
+          ...currentConcepts,
+          [conceptId]: details,
+        }));
+        return details;
+      } catch (error) {
+        console.error(`Failed to load concept details for ${conceptId}:`, error);
+        return null;
+      }
+    }
+    async function startQueue() {
+      const list = await loadConceptList();
+
+      conceptQueueRef.current = list.map((concept) => concept.id);
+      loadConceptListDetails();
+    }
+    startQueue();
+  }, []);
 
   function onConceptTermClick(conceptId) {
     const isOpen = openedConcepts.includes(conceptId);
@@ -156,12 +153,14 @@ export default function App() {
       >
         +
       </button>
-      <ConceptEditor
-        conceptEditorOpen={conceptEditorOpen}
-        setConceptEditorOpen={setConceptEditorOpen}
-        setConceptsLight={setConceptsLight}
-        setConceptsFull={setConceptsFull}
-      />
+      { conceptEditorOpen && (
+        <ConceptEditor
+          conceptEditorOpen={conceptEditorOpen}
+          setConceptEditorOpen={setConceptEditorOpen}
+          setConceptsLight={setConceptsLight}
+          setConceptsFull={setConceptsFull}
+        />
+      )}
     </main>
   );
 }

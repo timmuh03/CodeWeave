@@ -13,6 +13,10 @@ localPort = 5173
 externalPort = 5173
 
 [[ports]]
+localPort = 5174
+externalPort = 3000
+
+[[ports]]
 localPort = 8000
 externalPort = 80
 
@@ -20,5 +24,5 @@ externalPort = 80
 
 [deployment]
 deploymentTarget = "cloudrun"
-build = "python3 seed.py && cd frontend && npm install && npm run build"
+build = "cd frontend && npm ci && npm run build"
 run = "uvicorn main:app --host 0.0.0.0 --port 8000"

@@ -1,6 +1,6 @@
 import { createFullConcept, editFullConcept } from "../api/concepts";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function ConceptEditor({
   conceptToEdit = null,
@@ -9,40 +9,23 @@ export default function ConceptEditor({
   setConceptsFull,
   setConceptsLight,
 }) {
-  const [conceptName, setConceptName] = useState("");
-  const [conceptDescription, setConceptDescription] = useState("");
-  const [conceptLanguage, setConceptLanguage] = useState("");
+  const [conceptName, setConceptName] = useState(conceptToEdit?.term ?? "");
+  const [conceptDescription, setConceptDescription] = useState(conceptToEdit?.description ?? "");
+  const [conceptLanguage, setConceptLanguage] = useState(conceptToEdit?.language ?? "");
   const [currentSnippetIndex, setCurrentSnippetIndex] = useState(0);
-  const [conceptSnippets, setConceptSnippets] = useState([
-    {
-      snippetTitle: "",
-      snippet: "",
-    },
-  ]);
+  const [conceptSnippets, setConceptSnippets] = useState(() => {
+    const examples = conceptToEdit?.examples ?? [];
 
-  useEffect(() =>{
-    if(conceptToEdit && conceptEditorOpen) {
-      setConceptName(conceptToEdit.term);
-      setConceptDescription(conceptToEdit.description);
-      setConceptLanguage(conceptToEdit.language ?? "");
-
-      const examples = conceptToEdit.examples ?? [];
-
-      setConceptSnippets(
-        examples.length > 0
-        ? examples.map((example) => ({
+    return examples.length > 0
+      ? examples.map((example) => ({
           id: example.id,
           snippetTitle: example.title,
           snippet: example.text ?? "",
           display_order: example.display_order,
-          slots: example.slots ?? "",
-          }))
-        : [{snippetTitle: "", snippet: ""}]
-      );
-
-      setCurrentSnippetIndex(0);
-    }
-  }, [conceptToEdit, conceptEditorOpen])
+          slots: example.slots ?? [],
+        }))
+      : [{ snippetTitle: "", snippet: "" }];
+  });
 
   const isEditing = !!conceptToEdit
 

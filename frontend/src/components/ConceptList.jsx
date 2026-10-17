@@ -53,7 +53,7 @@ export default function ConceptList({
                 )}
                 {hasExamples && (
                   <ExampleTitles
-                    examples={fullConcept.examples}
+                    examples={visibleExamples}
                     exampleConceptId={fullConcept.id}
                     openedExampleMenuConceptIds={openedExampleMenuConceptIds}
                     setOpenedExampleMenuConceptIds={setOpenedExampleMenuConceptIds}

@@ -75,7 +75,7 @@ export default function ExampleText({
         left: currentPosition.left + horizontalAdjustment
       }));
     }
-  }, [openSlot?.id]);
+  }, [openSlot]);
     
   return(
     <div ref={containerRef} className="example-text-container">

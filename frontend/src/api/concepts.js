@@ -2,7 +2,7 @@ async function request(path, options = {}) {
   const response = await fetch(path, options);
 
   if (!response.ok) {
-    let errorData = null;
+    let errorData;
 
     try {
       errorData = await response.json();
