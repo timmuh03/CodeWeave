@@ -187,6 +187,28 @@ pre {
   opacity: 0.5;
 }
 
+.header-menu {
+  display: flex;
+}
+
+.search-clear {
+  margin: 0 1rem;
+}
+
+.search-input {
+  font-size: 16px;
+}
+
+.search-menu-shell {
+  position: absolute;
+  right: 0;
+  display: flex;
+}
+
+.search-shell {
+  position: relative;
+}
+
 .slot-menu-label {
   text-align: center;
   padding: .5rem;

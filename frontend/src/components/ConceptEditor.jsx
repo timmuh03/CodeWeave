@@ -61,7 +61,13 @@ export default function ConceptEditor({
   }
 
   function buildConcept() {
-    const examples = conceptSnippets.map((snippet, index) => ({
+    const examples = conceptSnippets
+    .filter((snippet) =>
+      snippet.id != null ||
+      snippet.snippetTitle.trim() ||
+      snippet.snippet.trim()
+    )
+      .map((snippet, index) => ({
       ...(snippet.id != null ? { id: snippet.id } : {}),
       title: snippet.snippetTitle,
       text: snippet.snippet,

@@ -10,8 +10,13 @@ export default function ConceptList({
   openedSlotMenuIds, setOpenedSlotMenuIds,
   activeSlotOptions, setActiveSlotOptions,
   onConceptDeleted, sortOrder,
+  searchText,
 }) {
-  const sortedConcepts = [...conceptsLight].sort((a,b) =>
+  const filteredConcepts = conceptsLight.filter((concept) =>
+    concept.term.toLowerCase().includes(searchText.toLowerCase())
+    );
+  
+  const sortedConcepts = filteredConcepts.sort((a,b) =>
     sortOrder === "az"
     ? a.term.localeCompare(b.term)
     : b.term.localeCompare(a.term)
@@ -23,13 +28,12 @@ export default function ConceptList({
         {sortedConcepts.map((concept) => {
           const isOpen = openedConcepts.includes(concept.id);
           const fullConcept = conceptsFull[concept.id];
-          const hasExamples = fullConcept?.examples?.length > 0;
-
-          console.log(
-            "Empty concepts:",
-            sortedConcepts.filter((concept) => !concept.term?.trim())
+          const visibleExamples = (fullConcept?.examples ?? []).filter(
+            (example) => example.title?.trim() || example.text?.trim()
           );
-    
+
+          const hasExamples = visibleExamples.length > 0;
+      
           return (
           <li key={concept.id} className="concept-term">
             <div className="concept-term-arrow clickable"

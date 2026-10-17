@@ -15,6 +15,7 @@ export default function App() {
   const [activeSlotOptions, setActiveSlotOptions] = useState({});
   const [conceptEditorOpen, setConceptEditorOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState("az");
+  const [searchText, setSearchText] = useState("");
 
 
   const conceptQueueRef = useRef([]);
@@ -127,8 +128,9 @@ export default function App() {
   return (
     <main className="app">
       <Header
-        sortOrder={sortOrder}
         setSortOrder={setSortOrder}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
       <ConceptList
         conceptsLight={conceptsLight}
@@ -147,6 +149,7 @@ export default function App() {
         setConceptsLight={setConceptsLight}
         setConceptsFull={setConceptsFull}
         sortOrder={sortOrder}
+        searchText={searchText}
       />
       <button
         className = "concept-create-btn"
