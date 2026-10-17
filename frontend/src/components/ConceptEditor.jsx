@@ -47,6 +47,9 @@ export default function ConceptEditor({
   const isEditing = !!conceptToEdit
 
   async function saveConcept() {
+    if (!conceptName.trim()) {
+      return;
+    }
 
     const conceptData = buildConcept();
     try {
@@ -75,7 +78,7 @@ export default function ConceptEditor({
       slots: snippet.slots ?? [],
     }));
     const newConcept = {
-      term: conceptName,
+      term: conceptName.trim(),
       language: conceptLanguage,
       description: conceptDescription,
       examples,
@@ -179,10 +182,18 @@ export default function ConceptEditor({
       <div>
         <h1>Concept Editor</h1>
       </div>
-      <div className="concept-create-form">
+      <form 
+        id="concept-editor-form"
+        className="concept-create-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          saveConcept();
+        }}
+      >
         <label className="concept-field">
           Concept Name
           <input
+            required
             className="concept-title"
             type="text"
             value={conceptName}
@@ -247,11 +258,21 @@ export default function ConceptEditor({
             />
           </label>
           <div className="concept-create-snippet-btns">
-            <button onClick={deleteSnippet}>Delete Snippet</button>
-            <button onClick={() => makeNewSnippet()}>New Snippet</button>
+            <button 
+              type="button"
+              onClick={deleteSnippet}
+            >
+              Delete Snippet
+            </button>
+            <button 
+              type="button"
+              onClick={() => makeNewSnippet()}
+            >
+              New Snippet
+            </button>
           </div>
         </div>
-      </div>
+      </form>
       <div className="concept-create-spacer"></div>
       <div className="concept-create-form-btns">
         <button
@@ -264,10 +285,9 @@ export default function ConceptEditor({
           Cancel
         </button>
         <button
+          type="submit"
+          form="concept-editor-form"
           className="concept-create-form-save"
-          onClick={() => {
-            saveConcept();
-          }}
         >
           Save
         </button>
