@@ -4,6 +4,7 @@ from fastapi import (APIRouter, Depends,
   HTTPException, status)
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.exc import IntegrityError
 
 from db import get_db
 from models import Concept, Example, ExampleSlot, SlotOption
@@ -96,6 +97,13 @@ def create_concept_full(
     db.commit()
     db.refresh(concept)
     return concept
+
+  except IntegrityError as exc:
+    db.rollback()
+    raise HTTPException(
+      status_code=status.HTTP_409_CONFLICT,
+      detail="Database constraint conflict"
+    ) from exc
 
   except Exception:
     db.rollback()
