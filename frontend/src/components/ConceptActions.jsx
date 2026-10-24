@@ -31,13 +31,15 @@ export default function ConceptActions({
         Edit
       </button>
 
-      <ConceptEditor
-        conceptToEdit={fullConcept}
-        conceptEditorOpen={conceptEditorOpen}
-        setConceptEditorOpen={setConceptEditorOpen}
-        setConceptsFull={setConceptsFull}
-        setConceptsLight={setConceptsLight}
-      />
+      {conceptEditorOpen && (
+        <ConceptEditor
+          conceptToEdit={fullConcept}
+          conceptEditorOpen={conceptEditorOpen}
+          setConceptEditorOpen={setConceptEditorOpen}
+          setConceptsFull={setConceptsFull}
+          setConceptsLight={setConceptsLight}
+        />
+      )}
       
       <button onClick={() => setDeleteOpen(true)}>
         Delete

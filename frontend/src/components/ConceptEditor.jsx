@@ -164,6 +164,7 @@ export default function ConceptEditor({
     >
       <div>
         <h1>Concept Editor</h1>
+        <p>{String(isEditing)}</p>
       </div>
       <form 
         id="concept-editor-form"
