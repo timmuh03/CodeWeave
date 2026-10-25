@@ -4,11 +4,20 @@ from copy import deepcopy
 import pytest
 
 
-def test_create_concept_basic(basic_concept):
+def test_create_concept_basic():
+  concept_data = {
+    "term": "Python Lists",
+    "description": "An ordered, mutable collection",
+    "language": "Python",
+    "examples": []
+  }
 
-  assert basic_concept.status_code == 201
+  with TestClient(app) as client:
+    response = client.post("/concepts/full", json=concept_data)
 
-  saved_concept = basic_concept.json()
+  assert response.status_code == 201
+
+  saved_concept = response.json()
 
   assert saved_concept["term"] == "Python Lists"
   assert saved_concept["description"] == "An ordered, mutable collection"

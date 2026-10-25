@@ -42,5 +42,5 @@ class ExampleUpdateFull(AppSchema):
   id: int | None = None
   title: str
   text: str
-  display_order: int
+  display_order: int | None = None
   slots: list["ExampleSlotUpdateFull"] = Field(default_factory=list)

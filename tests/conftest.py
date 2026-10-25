@@ -41,7 +41,7 @@ def basic_concept():
   with TestClient(app) as client:
     response = client.post("/concepts/full", json=concept_data)
 
-  return response
+  return response.json()
 
 
 @pytest.fixture

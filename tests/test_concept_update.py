@@ -116,3 +116,19 @@ def test_edit_option_text(full_concept):
   assert response.json()["examples"][0]["slots"][0]["slot_options"][0]["option_text"] == "foobar"
 
 
+def test_add_example_to_concept(basic_concept):
+  update_payload = deepcopy(basic_concept)
+  update_payload["examples"] = [{
+    "title": "Test example title",
+    "text": "Test example text",
+    "slots": []
+  }]
+
+  with TestClient(app) as client:
+    response = client.put(
+      f"/concepts/{basic_concept['id']}/full",
+      json=update_payload
+    )
+
+    assert response.status_code == 200
+    assert response.json()["examples"][0]["title"]

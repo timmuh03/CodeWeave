@@ -7,7 +7,7 @@ import pytest
 def test_get_concept_by_id(basic_concept):
   with TestClient(app) as client:
     get_response = client.get(
-      f"/concepts/{basic_concept.json()['id']}"
+      f"/concepts/{basic_concept['id']}"
     )
 
   assert get_response.status_code == 200
@@ -24,9 +24,9 @@ def test_get_concepts(basic_concept):
 
 def test_delete_concept(basic_concept):
   with TestClient(app) as client:
-    response = client.delete(f"/concepts/{basic_concept.json()['id']}")
+    response = client.delete(f"/concepts/{basic_concept['id']}")
 
-    get_response = client.get(f"/concepts/{basic_concept.json()['id']}")
+    get_response = client.get(f"/concepts/{basic_concept['id']}")
 
     assert response.status_code == 204
     assert get_response.status_code == 404
