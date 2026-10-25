@@ -12,13 +12,19 @@ export default function App() {
   const [activeExampleIds, setActiveExampleIds] = useState({});
   const [openedSlotMenuIds, setOpenedSlotMenuIds] = useState([]);
   const [activeSlotOptions, setActiveSlotOptions] = useState({});
-  const [conceptEditorOpen, setConceptEditorOpen] = useState(false);
+  const [conceptEditor, setConceptEditor] = useState(null);
   const [sortOrder, setSortOrder] = useState("az");
   const [searchText, setSearchText] = useState("");
-
-
+  
   const conceptQueueRef = useRef([]);
   const isLoadingRef = useRef(false);
+
+  function openConceptEditor(fullConcept=null) {
+    setConceptEditor({
+      mode: fullConcept ? "edit" : "create",
+      concept: fullConcept
+    })
+  }
 
   useEffect(() => {
     function closeSlotMenus() {
@@ -146,17 +152,21 @@ export default function App() {
         setConceptsFull={setConceptsFull}
         sortOrder={sortOrder}
         searchText={searchText}
+        conceptEditor={conceptEditor}
+        setConceptEditor={setConceptEditor}
       />
+      { !conceptEditor &&(
       <button
         className = "concept-create-btn"
-        onClick={ ()=> setConceptEditorOpen(!conceptEditorOpen)}
+        onClick={ ()=> openConceptEditor()}
       >
         +
       </button>
-      { conceptEditorOpen && (
+      )}
+      { conceptEditor?.mode == "create" && (
         <ConceptEditor
-          conceptEditorOpen={conceptEditorOpen}
-          setConceptEditorOpen={setConceptEditorOpen}
+          conceptEditor={conceptEditor}
+          setConceptEditor={setConceptEditor}
           setConceptsLight={setConceptsLight}
           setConceptsFull={setConceptsFull}
         />
