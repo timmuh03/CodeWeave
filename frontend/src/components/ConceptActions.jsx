@@ -8,9 +8,10 @@ export default function ConceptActions({
   onConceptDeleted,
   setConceptsLight,
   setConceptsFull,
+  conceptEditor,
+  setConceptEditor
 }) {
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [conceptEditorOpen, setConceptEditorOpen] = useState(false);
   
   async function deletePress() {
     try {
@@ -25,17 +26,17 @@ export default function ConceptActions({
   return (
     <div>
       <button
-        onClick={ ()=> setConceptEditorOpen(true) }
+        onClick={ ()=> setConceptEditor(true) }
         disabled={!fullConcept}
       >
         Edit
       </button>
 
-      {conceptEditorOpen && (
+      {conceptEditor && (
         <ConceptEditor
           conceptToEdit={fullConcept}
-          conceptEditorOpen={conceptEditorOpen}
-          setConceptEditorOpen={setConceptEditorOpen}
+          conceptEditor={conceptEditor}
+          setConceptEditor={setConceptEditor}
           setConceptsFull={setConceptsFull}
           setConceptsLight={setConceptsLight}
         />

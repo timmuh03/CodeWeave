@@ -4,8 +4,8 @@ import { useState } from "react";
 
 export default function ConceptEditor({
   conceptToEdit = null,
-  conceptEditorOpen,
-  setConceptEditorOpen,
+  conceptEditor,
+  setConceptEditor,
   setConceptsFull,
   setConceptsLight,
 }) {
@@ -14,17 +14,17 @@ export default function ConceptEditor({
   const [conceptLanguage, setConceptLanguage] = useState(conceptToEdit?.language ?? "");
   const [currentSnippetIndex, setCurrentSnippetIndex] = useState(0);
   const [conceptSnippets, setConceptSnippets] = useState(() => {
-    const examples = conceptToEdit?.examples ?? [];
+  const examples = conceptToEdit?.examples ?? [];
 
-    return examples.length > 0
-      ? examples.map((example) => ({
-          id: example.id,
-          snippetTitle: example.title,
-          snippet: example.text ?? "",
-          display_order: example.display_order,
-          slots: example.slots ?? [],
-        }))
-      : [{ snippetTitle: "", snippet: "" }];
+  return examples.length > 0
+    ? examples.map((example) => ({
+        id: example.id,
+        snippetTitle: example.title,
+        snippet: example.text ?? "",
+        display_order: example.display_order,
+        slots: example.slots ?? [],
+      }))
+    : [{ snippetTitle: "", snippet: "" }];
   });
 
   const isEditing = !!conceptToEdit
@@ -39,7 +39,7 @@ export default function ConceptEditor({
       const savedConcept = await conceptToAPI(conceptData);
       updateState(savedConcept);
 
-      setConceptEditorOpen(false);
+      setConceptEditor(false);
       resetForm();
     } catch (error) {
       console.error("Failed to save concept.", error);
@@ -159,8 +159,8 @@ export default function ConceptEditor({
 
   return (
     <div
-      inert={!conceptEditorOpen}
-      className={`concept-create-form-shell ${conceptEditorOpen ? "open" : ""}`}
+      inert={!conceptEditor}
+      className={`concept-create-form-shell ${conceptEditor ? "open" : ""}`}
     >
       <div>
         <h1>Concept Editor</h1>
@@ -263,7 +263,7 @@ export default function ConceptEditor({
           className="concept-create-form-cancel"
           onClick={() => {
             resetForm();
-            setConceptEditorOpen(false);
+            setConceptEditor(null);
           }}
         >
           Cancel

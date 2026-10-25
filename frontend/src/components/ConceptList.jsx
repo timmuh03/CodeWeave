@@ -11,6 +11,7 @@ export default function ConceptList({
   activeSlotOptions, setActiveSlotOptions,
   onConceptDeleted, sortOrder,
   searchText,
+  conceptEditor, setConceptEditor,
 }) {
   const filteredConcepts = conceptsLight.filter((concept) =>
     concept.term.toLowerCase().includes(searchText.toLowerCase())
@@ -67,11 +68,13 @@ export default function ConceptList({
                 )}
                 {
                   <ConceptActions 
-                  conceptId={concept.id}
-                  fullConcept={fullConcept}
-                  onConceptDeleted={onConceptDeleted}
-                  setConceptsLight={setConceptsLight}
-                  setConceptsFull={setConceptsFull}
+                    conceptId={concept.id}
+                    fullConcept={fullConcept}
+                    onConceptDeleted={onConceptDeleted}
+                    setConceptsLight={setConceptsLight}
+                    setConceptsFull={setConceptsFull}
+                    conceptEditor={conceptEditor}
+                    setConceptEditor={setConceptEditor}
                   />
                 }
               </div>
