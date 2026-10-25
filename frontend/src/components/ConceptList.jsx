@@ -10,7 +10,7 @@ export default function ConceptList({
   openedSlotMenuIds, setOpenedSlotMenuIds,
   activeSlotOptions, setActiveSlotOptions,
   onConceptDeleted, sortOrder,
-  searchText,
+  searchText, openConceptEditor,
   conceptEditor, setConceptEditor,
 }) {
   const filteredConcepts = conceptsLight.filter((concept) =>
@@ -75,6 +75,7 @@ export default function ConceptList({
                     setConceptsFull={setConceptsFull}
                     conceptEditor={conceptEditor}
                     setConceptEditor={setConceptEditor}
+                    openConceptEditor={openConceptEditor}
                   />
                 }
               </div>
