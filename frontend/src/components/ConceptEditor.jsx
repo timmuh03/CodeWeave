@@ -3,31 +3,30 @@ import { createFullConcept, editFullConcept } from "../api/concepts";
 import { useState } from "react";
 
 export default function ConceptEditor({
-  conceptToEdit = null,
   conceptEditor,
   setConceptEditor,
   setConceptsFull,
   setConceptsLight,
 }) {
-  const [conceptName, setConceptName] = useState(conceptToEdit?.term ?? "");
-  const [conceptDescription, setConceptDescription] = useState(conceptToEdit?.description ?? "");
-  const [conceptLanguage, setConceptLanguage] = useState(conceptToEdit?.language ?? "");
+  const [conceptName, setConceptName] = useState(conceptEditor?.concept?.term ?? "");
+  const [conceptDescription, setConceptDescription] = useState(conceptEditor?.concept?.description ?? "");
+  const [conceptLanguage, setConceptLanguage] = useState(conceptEditor?.concept?.language ?? "");
   const [currentSnippetIndex, setCurrentSnippetIndex] = useState(0);
   const [conceptSnippets, setConceptSnippets] = useState(() => {
-  const examples = conceptToEdit?.examples ?? [];
+    const examples = conceptEditor.concept?.examples ?? [];
 
-  return examples.length > 0
-    ? examples.map((example) => ({
-        id: example.id,
-        snippetTitle: example.title,
-        snippet: example.text ?? "",
-        display_order: example.display_order,
-        slots: example.slots ?? [],
-      }))
-    : [{ snippetTitle: "", snippet: "" }];
+    return examples.length > 0
+      ? examples.map((example) => ({
+          id: example.id,
+          snippetTitle: example.title,
+          snippet: example.text ?? "",
+          display_order: example.display_order,
+          slots: example.slots ?? [],
+        }))
+      : [{ snippetTitle: "", snippet: "" }];
   });
 
-  const isEditing = !!conceptToEdit
+  const isEditing = conceptEditor?.mode === "edit";
 
   async function saveConcept() {
     if (!conceptName.trim()) {
@@ -39,7 +38,7 @@ export default function ConceptEditor({
       const savedConcept = await conceptToAPI(conceptData);
       updateState(savedConcept);
 
-      setConceptEditor(false);
+      setConceptEditor(null);
       resetForm();
     } catch (error) {
       console.error("Failed to save concept.", error);
@@ -72,7 +71,7 @@ export default function ConceptEditor({
 
   async function conceptToAPI(concept) {
       if (isEditing) {
-        return await editFullConcept(conceptToEdit.id, concept);
+        return await editFullConcept(conceptEditor.concept?.id, concept);
       }
       else {
         return await createFullConcept(concept);
@@ -164,7 +163,6 @@ export default function ConceptEditor({
     >
       <div>
         <h1>Concept Editor</h1>
-        <p>{String(isEditing)}</p>
       </div>
       <form 
         id="concept-editor-form"

@@ -9,7 +9,8 @@ export default function ConceptActions({
   setConceptsLight,
   setConceptsFull,
   conceptEditor,
-  setConceptEditor
+  setConceptEditor,
+  openConceptEditor,
 }) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   
@@ -26,7 +27,7 @@ export default function ConceptActions({
   return (
     <div>
       <button
-        onClick={ ()=> setConceptEditor(true) }
+        onClick={ ()=> openConceptEditor(fullConcept) }
         disabled={!fullConcept}
       >
         Edit
@@ -34,7 +35,6 @@ export default function ConceptActions({
 
       {conceptEditor && (
         <ConceptEditor
-          conceptToEdit={fullConcept}
           conceptEditor={conceptEditor}
           setConceptEditor={setConceptEditor}
           setConceptsFull={setConceptsFull}

@@ -154,6 +154,7 @@ export default function App() {
         searchText={searchText}
         conceptEditor={conceptEditor}
         setConceptEditor={setConceptEditor}
+        openConceptEditor={openConceptEditor}
       />
       { !conceptEditor &&(
       <button
