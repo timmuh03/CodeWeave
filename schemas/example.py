@@ -8,7 +8,7 @@ class AppSchema(BaseModel):
 class ExampleCreate(AppSchema):
   title: str
   text: str
-  display_order: int = 0
+  display_order: int | None = None
   slots: list["ExampleSlotCreate"] = Field(default_factory=list)
 
 class ExampleRead(AppSchema):
@@ -16,14 +16,14 @@ class ExampleRead(AppSchema):
   concept_id: int
   title: str
   text: str
-  display_order: int = 0
+  display_order: int
 
 class ExampleReadDown(AppSchema):
   id: int
   concept_id: int
   title: str
   text: str
-  display_order: int = 0
+  display_order: int
   
   slots: list["ExampleSlotReadDown"] = Field(default_factory=list)
 class ExampleReadUp(AppSchema):
@@ -31,7 +31,7 @@ class ExampleReadUp(AppSchema):
   concept_id: int
   title: str
   text: str
-  display_order: int = 0
+  display_order: int
 
 class ExampleUpdate(AppSchema):
   title: str | None = None
@@ -42,5 +42,5 @@ class ExampleUpdateFull(AppSchema):
   id: int | None = None
   title: str
   text: str
-  display_order: int = 0
+  display_order: int
   slots: list["ExampleSlotUpdateFull"] = Field(default_factory=list)
