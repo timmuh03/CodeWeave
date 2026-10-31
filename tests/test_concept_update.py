@@ -132,3 +132,27 @@ def test_add_example_to_concept(basic_concept):
 
     assert response.status_code == 200
     assert response.json()["examples"][0]["title"]
+
+
+def test_add_slot_to_example(full_concept):
+  update_payload = deepcopy(full_concept)
+  update_payload["examples"][0]["slots"].append({
+    "slot_label": "foo",
+    "slot_type": "bar",
+    "slot_options": []
+  })
+
+  with TestClient(app) as client:
+    response = client.put(
+      f"/concepts/{full_concept['id']}/full",
+      json=update_payload
+    )
+    get_response = client.get(
+      f"/concepts/{full_concept['id']}"
+    )
+    get_json = get_response.json()
+
+    assert get_response.status_code == 200
+    assert response.status_code == 200
+    assert get_json["examples"][0]["slots"][-1]["slot_label"] == "foo"
+    assert get_json["examples"][0]["slots"][-1]["slot_type"] == "bar"
