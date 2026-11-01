@@ -323,6 +323,12 @@ def update_concept_full(
       )
     )
 
+  except IntegrityError as exc:
+    db.rollback()
+    raise HTTPException(
+      status_code=status.HTTP_409_CONFLICT,
+      detail=f"Database constrain conflict"
+    ) from exc
   except Exception as e:
     db.rollback()
     raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

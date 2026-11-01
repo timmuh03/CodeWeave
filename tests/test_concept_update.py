@@ -47,8 +47,8 @@ def test_edit_concept_language(full_concept):
       json=update_payload
     )
 
-    assert response.status_code == 200
-    assert response.json()["language"] == "foobar"
+  assert response.status_code == 200
+  assert response.json()["language"] == "foobar"
 
 
 def test_edit_example_title(full_concept):
@@ -61,8 +61,8 @@ def test_edit_example_title(full_concept):
       json=update_payload
     )
 
-    assert response.status_code == 200
-    assert response.json()["examples"][0]["title"] == "foobar"
+  assert response.status_code == 200
+  assert response.json()["examples"][0]["title"] == "foobar"
 
 
 def test_edit_example_text(full_concept):
@@ -137,12 +137,10 @@ def test_add_example_to_concept(basic_concept):
     get_response = client.get(
       f"/concepts/{basic_concept['id']}"
     )
-
-    print(get_response.json())
     
-    assert response.status_code == 200
-    assert response.json()["examples"][0]["title"] == "Test example title"
-    assert get_response.json()["examples"][0]["title"] == "Test example title"
+  assert response.status_code == 200
+  assert response.json()["examples"][0]["title"] == "Test example title"
+  assert get_response.json()["examples"][0]["title"] == "Test example title"
     
 
 
@@ -164,14 +162,37 @@ def test_add_slot_to_example(full_concept):
     )
     get_json = get_response.json()
 
-    assert get_response.status_code == 200
-    assert response.status_code == 200
-    assert get_json["examples"][0]["slots"][-1]["slot_label"] == "foo"
-    assert get_json["examples"][0]["slots"][-1]["slot_type"] == "bar"
+  slots = get_json["examples"][0]["slots"]
+
+  assert get_response.status_code == 200
+  assert response.status_code == 200
+  assert len(slots) == 2
+  assert {slot["slot_label"] for slot in slots} == {"Count", "foo"}
 
 
-  def test_update_non_existent_concept():
-    with TestClient(app) as client:
-      response = client.put(f"/concepts/99/full")
+def test_update_non_existent_concept(basic_concept):
+  with TestClient(app) as client:
+    response = client.put(
+      "/concepts/9999999/full",
+      json=basic_concept
+    )
 
-    assert response.status_code == 404
+  assert response.status_code == 404
+
+
+def test_update_concept_with_duplicate_name(basic_concept, full_concept):
+  update_payload = {
+    "term": full_concept["term"],
+    "description": "An ordered, mutable collection",
+    "language": "Python",
+    "examples": []
+  }
+
+  with TestClient(app) as client:
+    response = client.put(
+      f"/concepts/{basic_concept['id']}/full",
+      json=update_payload
+    )
+
+  assert response.status_code == 409
+  
