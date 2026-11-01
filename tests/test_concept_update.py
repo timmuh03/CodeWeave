@@ -28,9 +28,14 @@ def test_edit_concept_description(full_concept):
       json=update_payload
     )
 
-  assert response.status_code == 200
-  assert response.json()["description"] == "foobar"
+  saved_concept = response.json()
 
+  assert response.status_code == 200
+  assert saved_concept["description"] == "foobar"
+  assert saved_concept["term"] == full_concept["term"]
+  assert saved_concept["language"] == full_concept["language"]
+  assert saved_concept["examples"] == full_concept["examples"]
+  
 
 def test_edit_concept_language(full_concept):
   update_payload = deepcopy(full_concept)
@@ -129,9 +134,16 @@ def test_add_example_to_concept(basic_concept):
       f"/concepts/{basic_concept['id']}/full",
       json=update_payload
     )
+    get_response = client.get(
+      f"/concepts/{basic_concept['id']}"
+    )
 
+    print(get_response.json())
+    
     assert response.status_code == 200
-    assert response.json()["examples"][0]["title"]
+    assert response.json()["examples"][0]["title"] == "Test example title"
+    assert get_response.json()["examples"][0]["title"] == "Test example title"
+    
 
 
 def test_add_slot_to_example(full_concept):
@@ -156,3 +168,10 @@ def test_add_slot_to_example(full_concept):
     assert response.status_code == 200
     assert get_json["examples"][0]["slots"][-1]["slot_label"] == "foo"
     assert get_json["examples"][0]["slots"][-1]["slot_type"] == "bar"
+
+
+  def test_update_non_existent_concept():
+    with TestClient(app) as client:
+      response = client.put(f"/concepts/99/full")
+
+    assert response.status_code == 404

@@ -139,3 +139,41 @@ def test_create_duplicate_concept():
     dup_response = client.post("/concepts/full", json=concept_data)
 
   assert dup_response.status_code == 409
+
+
+def test_create_invalid_concept():
+  payload = {
+    "description": "Repeating operations.",
+    "language": "Python",
+    "examples": [
+      {
+        "title": "For Loop",
+        "text": "for x in range(##Count##): print(x)",
+        "display_order": 0,
+        "slots": [
+          {
+            "slot_label": "Count",
+            "slot_type": "number",
+            "slot_options": [
+              {
+                "option_text": "5",
+                "display_order": 0
+              },
+              {
+                "option_text": "10",
+                "display_order": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+
+  with TestClient(app) as client:
+    response = client.post(
+      f"/concepts/full",
+      json=payload
+    )
+
+  assert response.status_code == 422
