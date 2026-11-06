@@ -25,10 +25,10 @@ export default function ExampleText({
     })
     
     setOpenedSlotMenuIds((currentIds) => {
-      if (currentIds.includes(slot.id)) {
+      if (currentIds.includes(slot?.id)) {
         return [];
       }
-      return [slot.id];
+      return [slot?.id];
     });
   }
 
@@ -90,7 +90,7 @@ export default function ExampleText({
       
             const slotLabel = part.slice(2, -2);
             const slot = slots.find((slot) => slot.slot_label === slotLabel);
-            const activeOption = activeSlotOptions[slot.id] || slot.slot_options?.[0];
+            const activeOption = slot && activeSlotOptions[slot.id] || slot?.slot_options?.[0];
             const optionText = activeOption?.option_text || slotLabel;        
         
             return (

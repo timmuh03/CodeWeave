@@ -164,7 +164,7 @@ export default function App() {
         +
       </button>
       )}
-      { conceptEditor?.mode == "create" && (
+      { conceptEditor && (
         <ConceptEditor
           conceptEditor={conceptEditor}
           setConceptEditor={setConceptEditor}

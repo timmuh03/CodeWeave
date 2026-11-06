@@ -218,6 +218,8 @@ pre {
 .slot-menu-overlay {
   position: absolute;
   background-color: #101010;
+  z-index: 10;
+  
 }
 
 .slot-wrapper {
