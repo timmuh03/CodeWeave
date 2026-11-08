@@ -37,7 +37,6 @@ export default function App() {
       document.removeEventListener("click", closeSlotMenus);
     };
   }, []);
-
   
 
   useEffect(() => {
@@ -102,6 +101,14 @@ export default function App() {
 
     moveToFront(conceptId);
   }
+
+  useEffect(() => {
+    document.body.style.overflow = conceptEditor ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [conceptEditor]);
 
   function moveToFront(conceptId) {
     if (!conceptQueueRef.current.includes(conceptId)) {

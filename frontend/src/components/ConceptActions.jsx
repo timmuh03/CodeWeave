@@ -1,15 +1,10 @@
 import { useState } from "react"
 import { deleteConcept } from "../api/concepts"
-import ConceptEditor from "./ConceptEditor"
 
 export default function ConceptActions({ 
   conceptId,
   fullConcept,
   onConceptDeleted,
-  setConceptsLight,
-  setConceptsFull,
-  conceptEditor,
-  setConceptEditor,
   openConceptEditor,
 }) {
   const [deleteOpen, setDeleteOpen] = useState(false);
