@@ -1,6 +1,7 @@
-import { createFullConcept, editFullConcept } from "../api/concepts";
+import { createFullConcept, editFullConcept } from "../../api/concepts";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { EditorView, basicSetup} from "codemirror";
 
 export default function ConceptEditor({
   conceptEditor,
@@ -26,7 +27,22 @@ export default function ConceptEditor({
       : [{ snippetTitle: "", snippet: "" }];
   });
 
-  const isEditing = conceptEditor?.mode === "edit";
+  const editorRef = useRef(null);
+  const editorInstanceRef = useRef(null);
+  const isEditing = conceptEditor?.mode === "edit"
+
+  useEffect(() => {
+    editorInstanceRef.current = new EditorView({
+      doc: conceptSnippets[currentSnippetIndex].snippet,
+      parent: editorRef.current,
+      extensions: [basicSetup],
+    });
+
+    return () => {
+      editorInstanceRef.current?.destroy();
+      editorInstanceRef.current = null;
+    };
+  }, [currentSnippetIndex]);
 
   async function saveConcept() {
     if (!conceptName.trim()) {
@@ -254,6 +270,7 @@ export default function ConceptEditor({
             </button>
           </div>
         </div>
+        <div ref={editorRef} />
       </form>
       <div className="concept-create-spacer"></div>
       <div className="concept-create-form-btns">

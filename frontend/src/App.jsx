@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { fetchConcepts, fetchConcept } from "./api/concepts";
-import ConceptList from "./components/ConceptList";
-import ConceptEditor from "./components/ConceptEditor"
-import Header from "./components/Header"
+import ConceptList from "./components/display/ConceptList";
+import ConceptEditor from "./components/editor/ConceptEditor"
+import Header from "./components/display/Header"
 
 export default function App() {
   const [conceptsLight, setConceptsLight] = useState([]);

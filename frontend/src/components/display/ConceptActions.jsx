@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { deleteConcept } from "../api/concepts"
+import { deleteConcept } from "../../api/concepts"
 
 export default function ConceptActions({ 
   conceptId,
