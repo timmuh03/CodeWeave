@@ -1,4 +1,5 @@
 import { createFullConcept, editFullConcept } from "../../api/concepts";
+import ConceptDetails from "./ConceptDetails"
 
 import { useState, useEffect, useRef } from "react";
 import { EditorView, basicSetup} from "codemirror";
@@ -188,32 +189,12 @@ export default function ConceptEditor({
           saveConcept();
         }}
       >
-        <label className="concept-field">
-          Concept Name
-          <input
-            required
-            className="concept-title"
-            type="text"
-            value={conceptName}
-            onChange={(event) => setConceptName(event.target.value)}
-          />
-        </label>
-        <label className="concept-field">
-          Description
-          <textarea
-            value={conceptDescription}
-            onChange={(event) => setConceptDescription(event.target.value)}
-          />
-        </label>
-        <label className="concept-field">
-          Language
-          <input
-            className="concept-language"
-            type="text"
-            value={conceptLanguage}
-            onChange={(event) => setConceptLanguage(event.target.value)}
-          />
-        </label>
+        <ConceptDetails 
+          conceptName={conceptName}
+          conceptDescription={conceptDescription}
+          conceptLanguage={conceptLanguage}
+        />
+        
         <span className="concept-create-snippet-carousel-menu">
           {/*change to button later */}
           <a onClick={prevSnippet}>←</a>
