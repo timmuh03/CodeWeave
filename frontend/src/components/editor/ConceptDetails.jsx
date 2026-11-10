@@ -1,7 +1,7 @@
 export default function ConceptDetails ({
-  conceptName,
-  conceptDescription,
-  conceptLanguage
+  conceptName, setConceptName,
+  conceptDescription, setConceptDescription,
+  conceptLanguage, setConceptLanguage
 }) {
   return (
     <div>
