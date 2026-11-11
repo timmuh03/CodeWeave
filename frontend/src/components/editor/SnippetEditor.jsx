@@ -1,4 +1,4 @@
-import { EditorView, basicSetup} from "codemirror";
+import { EditorView, minimalSetup} from "codemirror";
 import { useEffect, useRef } from "react"
 
 export default function SnippetEditor({
@@ -51,11 +51,29 @@ export default function SnippetEditor({
     );
   }
 
+  function onSnippetChange(newText) {
+    setConceptSnippets((currentSnippets) => 
+      currentSnippets.map((snippet, index) =>
+        index === currentSnippetIndex
+          ? {...snippet, snippet: newText}
+          : snippet
+      )
+    );
+  }
+
   useEffect(() => {
     editorInstanceRef.current = new EditorView({
       doc: conceptSnippets[currentSnippetIndex].snippet,
       parent: editorRef.current,
-      extensions: [basicSetup],
+      extensions: [
+        minimalSetup,
+        EditorView.updateListener.of((update) => {
+          if (update.docChanged) {
+            const newText = update.state.doc.toString();
+            onSnippetChange(newText);
+          }
+        }),
+      ],
     });
 
     return () => {
@@ -93,18 +111,9 @@ export default function SnippetEditor({
         </label>
         <label className="concept-field">
           Snippet
-          <textarea
+          <div 
+            ref={editorRef} 
             className="code-input"
-            value={conceptSnippets[currentSnippetIndex].snippet}
-            onChange={(event) => {
-              setConceptSnippets((currentSnippets) =>
-                currentSnippets.map((snippet, index) =>
-                  index === currentSnippetIndex
-                    ? { ...snippet, snippet: event.target.value }
-                    : snippet,
-                ),
-              );
-            }}
           />
         </label>
         <div className="concept-create-snippet-btns">
@@ -122,7 +131,6 @@ export default function SnippetEditor({
           </button>
         </div>
       </div>
-      <div ref={editorRef} />
     </div>
   );
 }

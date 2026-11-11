@@ -64,7 +64,7 @@ pre {
   padding-left: .5rem;
 }
 
-.code-input {
+.code-input .cm-editor{
   width: 100%;
   /* max-width: 100%; */
   min-height: 5rem;
@@ -79,6 +79,10 @@ pre {
   border-radius: 8px;
   resize: vertical;
   tab-size: 4;
+}
+
+.code-input .cm-cursor {
+  border-left-color: #d4d4d4;
 }
 
 .code-input:focus {
